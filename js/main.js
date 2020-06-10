@@ -22,11 +22,11 @@ var photos = ['http://o0.github.io/assets/images/tokyo/hotel1.jpg', 'http://o0.g
 
 var getRandomIntegerValue = function (min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
-}
+};
 
 var getGuestsQuantity = function (roomsQuantity) {
   return roomsQuantity !== rooms[rooms.length - 1] ? getRandomIntegerValue(1, roomsQuantity) : 'Не для гостей';
-}
+};
 
 var getSet = function (basisMassive) {
   var resultSet = [];
@@ -49,7 +49,7 @@ var getSet = function (basisMassive) {
     }
   }
   return resultSet;
-}
+};
 
 var getMassiveDatabase = function () {
   var massiveDatabase = [];
@@ -79,7 +79,7 @@ var getMassiveDatabase = function () {
     massiveDatabase[i].offer.photos = getSet(photos);
   }
   return massiveDatabase;
-}
+};
 
 var createPin = function (data) {
   var pin = pinButton.cloneNode(true);
@@ -87,11 +87,11 @@ var createPin = function (data) {
   pinImage.src = data.author.avatar;
   pinImage.alt = data.offer.title;
   return pin;
-}
+};
 
 var addPin = function (newPin) {
   mapPinsField.appendChild(newPin);
-}
+};
 
 var database = getMassiveDatabase();
 console.log(database);
