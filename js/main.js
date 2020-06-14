@@ -18,7 +18,7 @@ var pinButton = pinTemplate.querySelector('.map__pin');
 var fragment = document.createDocumentFragment();
 
 var types = ['palace', 'flat', 'house', 'bungalo'];
-var rooms = [1, 2, 3, 100];
+var roomsVariants = [1, 2, 3, 100];
 var features = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
 var photos = ['http://o0.github.io/assets/images/tokyo/hotel1.jpg', 'http://o0.github.io/assets/images/tokyo/hotel2.jpg', 'http://o0.github.io/assets/images/tokyo/hotel3.jpg'];
 var mapPinsFieldWidth = mapPinsField.clientWidth;
@@ -28,7 +28,7 @@ var getRandomIntegerValue = function (min, max) {
 };
 
 var getGuestsQuantity = function (roomsQuantity) {
-  return roomsQuantity !== rooms[rooms.length - 1] ? getRandomIntegerValue(1, roomsQuantity) : 'Не для гостей';
+  return roomsQuantity !== roomsVariants[roomsVariants.length - 1] ? getRandomIntegerValue(1, roomsQuantity) : 'Не для гостей';
 };
 
 var getSet = function (basisMassive) {
@@ -57,28 +57,32 @@ var getSet = function (basisMassive) {
 var getMassiveDatabase = function () {
   var massiveDatabase = [];
   for (var i = 0; i < QUANTITY_OF_OFFERS; i++) {
-    var ad = {};
+    var roomsSet = roomsVariants[getRandomIntegerValue(0, roomsVariants.length - 1)];
+    var ad = {
 
-    ad.author = {};
-    ad.author.avatar = 'img/avatars/user0' + (i + 1) + '.png';
+      author: {
+        avatar: 'img/avatars/user0' + (i + 1) + '.png'
+      },
 
-    ad.location = {};
-    ad.location.x = getRandomIntegerValue(PIN_COORDINATE_X_MIN, mapPinsFieldWidth);
-    ad.location.y = getRandomIntegerValue(PIN_COORDINATE_Y_MIN, PIN_COORDINATE_Y_MAX);
+      location: {
+        x: getRandomIntegerValue(PIN_COORDINATE_X_MIN, mapPinsFieldWidth),
+        y: getRandomIntegerValue(PIN_COORDINATE_Y_MIN, PIN_COORDINATE_Y_MAX)
+      },
 
-    ad.offer = {};
-    ad.offer.title = 'Заголовок предложения от Товарища №' + (i + 1);
-    ad.offer.address = '(' + ad.location.x + ',' + ad.location.y + ')';
-    ad.offer.price = getRandomIntegerValue(PRICE_MIN, PRICE_MAX);
-    ad.offer.type = types[getRandomIntegerValue(0, types.length - 1)];
-    ad.offer.rooms = rooms[getRandomIntegerValue(0, rooms.length - 1)];
-    ad.offer.guests = getGuestsQuantity(ad.offer.rooms);
-    ad.offer.checkin = getRandomIntegerValue(CHECK_IN_OUT_TIME_MIN, CHECK_IN_OUT_TIME_MAX) + ':00';
-    ad.offer.checkout = getRandomIntegerValue(CHECK_IN_OUT_TIME_MIN, CHECK_IN_OUT_TIME_MAX) + ':00';
-    ad.offer.features = getSet(features);
-    ad.offer.description = 'Описание предложения от Товарища №' + (i + 1);
-    ad.offer.photos = getSet(photos);
-
+      offer: {
+        title: 'Заголовок предложения от Товарища №' + (i + 1),
+        address: '(' + location.x + ',' + location.y + ')',
+        price: getRandomIntegerValue(PRICE_MIN, PRICE_MAX),
+        type: types[getRandomIntegerValue(0, types.length - 1)],
+        rooms: roomsSet,
+        guests: getGuestsQuantity(roomsSet),
+        checkin: getRandomIntegerValue(CHECK_IN_OUT_TIME_MIN, CHECK_IN_OUT_TIME_MAX) + ':00',
+        checkout: getRandomIntegerValue(CHECK_IN_OUT_TIME_MIN, CHECK_IN_OUT_TIME_MAX) + ':00',
+        features: getSet(features),
+        description: 'Описание предложения от Товарища №' + (i + 1),
+        photos: getSet(photos)
+      }
+    };
     massiveDatabase.push(ad);
   }
   return massiveDatabase;
