@@ -10,6 +10,16 @@ var CHECK_IN_OUT_TIME_MIN = 12;
 var CHECK_IN_OUT_TIME_MAX = 14;
 var PIN_WIDTH = 50;
 var PIN_HEIGHT = 70;
+var TYPES = ['palace', 'flat', 'house', 'bungalo'];
+var TRASLATED_TYPES = {
+  palace: 'Дворец',
+  flat: 'Квартира',
+  house: 'Дом',
+  bungalo: 'Бунгало'
+};
+var ROOMS_VARIANTS = [1, 2, 3, 100];
+var FEATURES = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
+var PHOTOS = ['http://o0.github.io/assets/images/tokyo/hotel1.jpg', 'http://o0.github.io/assets/images/tokyo/hotel2.jpg', 'http://o0.github.io/assets/images/tokyo/hotel3.jpg'];
 
 var map = document.querySelector('.map');
 var mapPinsField = document.querySelector('.map__pins');
@@ -21,16 +31,6 @@ var cardPopup = cardTemplate.querySelector('.popup');
 var pinFragment = document.createDocumentFragment();
 var cardFragment = document.createDocumentFragment();
 
-var types = ['palace', 'flat', 'house', 'bungalo'];
-var translatedTypes = {
-  palace: 'Дворец',
-  flat: 'Квартира',
-  house: 'Дом',
-  bungalo: 'Бунгало'
-};
-var roomsVariants = [1, 2, 3, 100];
-var features = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
-var photos = ['http://o0.github.io/assets/images/tokyo/hotel1.jpg', 'http://o0.github.io/assets/images/tokyo/hotel2.jpg', 'http://o0.github.io/assets/images/tokyo/hotel3.jpg'];
 var mapPinsFieldWidth = mapPinsField.clientWidth;
 
 var getRandomIntegerValue = function (min, max) {
@@ -38,7 +38,7 @@ var getRandomIntegerValue = function (min, max) {
 };
 
 var getGuestsQuantity = function (roomsQuantity) {
-  return roomsQuantity !== roomsVariants[roomsVariants.length - 1] ? getRandomIntegerValue(1, roomsQuantity) : 'Не для гостей';
+  return roomsQuantity !== ROOMS_VARIANTS[ROOMS_VARIANTS.length - 1] ? getRandomIntegerValue(1, roomsQuantity) : 'Не для гостей';
 };
 
 var getSet = function (basisMassive) {
@@ -67,7 +67,7 @@ var getSet = function (basisMassive) {
 var getMassiveDatabase = function () {
   var massiveDatabase = [];
   for (var i = 0; i < QUANTITY_OF_OFFERS; i++) {
-    var roomsSet = roomsVariants[getRandomIntegerValue(0, roomsVariants.length - 1)];
+    var roomsSet = ROOMS_VARIANTS[getRandomIntegerValue(0, ROOMS_VARIANTS.length - 1)];
     var ad = {
 
       author: {
@@ -83,14 +83,14 @@ var getMassiveDatabase = function () {
         title: 'Заголовок предложения от Товарища №' + (i + 1),
         address: '(' + location.x + ',' + location.y + ')',
         price: getRandomIntegerValue(PRICE_MIN, PRICE_MAX),
-        type: types[getRandomIntegerValue(0, types.length - 1)],
+        type: TYPES[getRandomIntegerValue(0, TYPES.length - 1)],
         rooms: roomsSet,
         guests: getGuestsQuantity(roomsSet),
         checkin: getRandomIntegerValue(CHECK_IN_OUT_TIME_MIN, CHECK_IN_OUT_TIME_MAX) + ':00',
         checkout: getRandomIntegerValue(CHECK_IN_OUT_TIME_MIN, CHECK_IN_OUT_TIME_MAX) + ':00',
-        features: getSet(features),
+        features: getSet(FEATURES),
         description: 'Описание предложения от Товарища №' + (i + 1),
-        photos: getSet(photos)
+        photos: getSet(PHOTOS)
       }
     };
     massiveDatabase.push(ad);
@@ -130,12 +130,12 @@ var createCard = function (data) {
   cardTitle.textContent = data.offer.title;
   cardAddress.textContent = data.offer.address;
   cardPrice.innerHTML = data.offer.price + '&#x20bd;<span>/ночь</span>';
-  cardType.textContent = translatedTypes[data.offer.type];
+  cardType.textContent = TRASLATED_TYPES[data.offer.type];
   cardCapacity.textContent = data.offer.rooms + ' комнаты для ' + data.offer.guests + ' гостей';
   cardTime.textContent = 'Заезд после ' + data.offer.checkin + ', выезд до ' + data.offer.checkout;
 
-  for (var i = features.length - 1; i >= 0; i--) {
-    data.offer.features.includes(features[i]) ? cardFeaturesItems[i].textContent = features[i] : cardFeatures.removeChild(cardFeaturesItems[i]);
+  for (var i = FEATURES.length - 1; i >= 0; i--) {
+    data.offer.features.includes(FEATURES[i]) ? cardFeaturesItems[i].textContent = FEATURES[i] : cardFeatures.removeChild(cardFeaturesItems[i]);
   }
 
   cardDescription.textContent = data.offer.description;
