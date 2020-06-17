@@ -136,14 +136,14 @@ var createCard = function (data) {
 
   for (var i = features.length - 1; i >= 0; i--) {
     data.offer.features.includes(features[i]) ? cardFeaturesItems[i].textContent = features[i] : cardFeatures.removeChild(cardFeaturesItems[i]);
-  };
+  }
 
   cardDescription.textContent = data.offer.description;
 
-  for (var i = 0; i < data.offer.photos.length; i++) {
-    cardPhoto.src = data.offer.photos[i];
-    i !== (data.offer.photos.length - 1) ? cardPhotos.appendChild(cardPhoto.cloneNode()) : null;
-  };
+  for (var j = 0; j < data.offer.photos.length; j++) {
+    cardPhoto.src = data.offer.photos[j];
+    j !== (data.offer.photos.length - 1) ? cardPhotos.appendChild(cardPhoto.cloneNode()) : null;
+  }
 
   return card;
 };
@@ -153,14 +153,13 @@ var addCard = function (newCard) {
 };
 
 var database = getMassiveDatabase();
-console.log(database);
 
 for (var i = 0; i < database.length; i++) {
   var mapPin = createPin(database[i]);
   var offerCard = createCard(database[i]);
   addPin(mapPin);
   addCard(offerCard);
-};
+}
 
 mapPinsField.appendChild(pinFragment);
 map.insertBefore(cardFragment, mapFilter);
