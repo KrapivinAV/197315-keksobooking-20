@@ -13,11 +13,21 @@ var PIN_HEIGHT = 70;
 
 var map = document.querySelector('.map');
 var mapPinsField = document.querySelector('.map__pins');
+var mapFilter = document.querySelector('.map__filters-container');
 var pinTemplate = document.querySelector('#pin').content;
 var pinButton = pinTemplate.querySelector('.map__pin');
-var fragment = document.createDocumentFragment();
+var cardTemplate = document.querySelector('#card').content;
+var cardPopup = cardTemplate.querySelector('.popup');
+var pinFragment = document.createDocumentFragment();
+var cardFragment = document.createDocumentFragment();
 
 var types = ['palace', 'flat', 'house', 'bungalo'];
+var translatedTypes = {
+  palace: 'Дворец',
+  flat: 'Квартира',
+  house: 'Дом',
+  bungalo: 'Бунгало'
+};
 var roomsVariants = [1, 2, 3, 100];
 var features = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
 var photos = ['http://o0.github.io/assets/images/tokyo/hotel1.jpg', 'http://o0.github.io/assets/images/tokyo/hotel2.jpg', 'http://o0.github.io/assets/images/tokyo/hotel3.jpg'];
@@ -98,16 +108,61 @@ var createPin = function (data) {
 };
 
 var addPin = function (newPin) {
-  fragment.appendChild(newPin);
+  pinFragment.appendChild(newPin);
+};
+
+var createCard = function (data) {
+  var card = cardPopup.cloneNode(true);
+  var cardAvatar = card.querySelector('.popup__avatar');
+  var cardTitle = card.querySelector('.popup__title');
+  var cardAddress = card.querySelector('.popup__text--address');
+  var cardPrice = card.querySelector('.popup__text--price');
+  var cardType = card.querySelector('.popup__type');
+  var cardCapacity = card.querySelector('.popup__text--capacity');
+  var cardTime = card.querySelector('.popup__text--time');
+  var cardFeatures = card.querySelector('.popup__features');
+  var cardFeaturesItems = cardFeatures.children;
+  var cardDescription = card.querySelector('.popup__description');
+  var cardPhotos = card.querySelector('.popup__photos');
+  var cardPhoto = cardPhotos.querySelector('.popup__photo');
+
+  cardAvatar.src = data.author.avatar;
+  cardTitle.textContent = data.offer.title;
+  cardAddress.textContent = data.offer.address;
+  cardPrice.innerHTML = data.offer.price + '&#x20bd;<span>/ночь</span>';
+  cardType.textContent = translatedTypes[data.offer.type];
+  cardCapacity.textContent = data.offer.rooms + ' комнаты для ' + data.offer.guests + ' гостей';
+  cardTime.textContent = 'Заезд после ' + data.offer.checkin + ', выезд до ' + data.offer.checkout;
+
+  for (var i = features.length - 1; i >= 0; i--) {
+    data.offer.features.includes(features[i]) ? cardFeaturesItems[i].textContent = features[i] : cardFeatures.removeChild(cardFeaturesItems[i]);
+  };
+
+  cardDescription.textContent = data.offer.description;
+
+  for (var i = 0; i < data.offer.photos.length; i++) {
+    cardPhoto.src = data.offer.photos[i];
+    i !== (data.offer.photos.length - 1) ? cardPhotos.appendChild(cardPhoto.cloneNode()) : null;
+  };
+
+  return card;
+};
+
+var addCard = function (newCard) {
+  cardFragment.appendChild(newCard);
 };
 
 var database = getMassiveDatabase();
+console.log(database);
 
 for (var i = 0; i < database.length; i++) {
   var mapPin = createPin(database[i]);
+  var offerCard = createCard(database[i]);
   addPin(mapPin);
-}
+  addCard(offerCard);
+};
 
-mapPinsField.appendChild(fragment);
+mapPinsField.appendChild(pinFragment);
+map.insertBefore(cardFragment, mapFilter);
 
 map.classList.remove('map--faded');
