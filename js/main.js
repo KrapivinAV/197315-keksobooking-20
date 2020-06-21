@@ -50,7 +50,6 @@ var pinButton = pinTemplate.querySelector('.map__pin');
 var cardTemplate = document.querySelector('#card').content;
 var cardPopup = cardTemplate.querySelector('.popup');
 var pinFragment = document.createDocumentFragment();
-//var cardFragment = document.createDocumentFragment();
 var mapPinsFieldWidth = mapPinsField.clientWidth;
 
 var getRandomIntegerValue = function (min, max) {
@@ -176,21 +175,15 @@ var createCard = function (data) {
   return card;
 };
 
-var addCard = function (newCard) {
-  cardFragment.appendChild(newCard);
-};
-
 var database = getMassiveDatabase();
 
 for (var i = 0; i < database.length; i++) {
   var mapPin = createPin(database[i]);
-  //var offerCard = createCard(database[i]);
   addPin(mapPin);
-  //addCard(offerCard);
 }
 
 mapPinsField.appendChild(pinFragment);
-//map.insertBefore(cardFragment, mapFilter);
+
 var offerCard = createCard(database[0]);
 map.insertBefore(offerCard, mapFilter);
 
