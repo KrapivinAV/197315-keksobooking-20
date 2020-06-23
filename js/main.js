@@ -16,12 +16,16 @@ var TYPES = [
   'house',
   'bungalo'
 ];
+
+/*
 var TRASLATED_TYPES = {
   palace: 'Дворец',
   flat: 'Квартира',
   house: 'Дом',
   bungalo: 'Бунгало'
 };
+*/
+
 var ROOMS_VARIANTS = [
   1,
   2,
@@ -41,16 +45,32 @@ var PHOTOS = [
   'http://o0.github.io/assets/images/tokyo/hotel2.jpg',
   'http://o0.github.io/assets/images/tokyo/hotel3.jpg'
 ];
+var CONFIRM_EVT_KEY = 'Enter';
+
 
 var map = document.querySelector('.map');
-var mapPinsField = document.querySelector('.map__pins');
-var mapFilter = document.querySelector('.map__filters-container');
+var mapPinsField = map.querySelector('.map__pins');
+var mapPinMain = map.querySelector('.map__pin--main');
+var mapFilter = map.querySelector('.map__filters-container');
+var mapFilterFields = mapFilter.children;
+var adForm = document.querySelector('.ad-form');
+var adFormFields = adForm.children;
+var adFormAddressField = adForm.querySelector('#address');
+var adFormRoomsField = adForm.querySelector('#room_number');
+var adFormCapacityField = adForm.querySelector('#capacity');
 var pinTemplate = document.querySelector('#pin').content;
 var pinButton = pinTemplate.querySelector('.map__pin');
+
+/*
 var cardTemplate = document.querySelector('#card').content;
 var cardPopup = cardTemplate.querySelector('.popup');
+*/
+
 var pinFragment = document.createDocumentFragment();
 var mapPinsFieldWidth = mapPinsField.clientWidth;
+var mapPinMainWidth = mapPinMain.offsetWidth;
+var mapPinMainHeight = mapPinMain.offsetHeight;
+var mapPinMainArrowHeight = 22;
 
 var getRandomIntegerValue = function (min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
@@ -132,6 +152,57 @@ var addPin = function (newPin) {
   pinFragment.appendChild(newPin);
 };
 
+var setActiveMod = function () {
+  map.classList.remove('map--faded');
+  adForm.classList.remove('ad-form--disabled');
+
+  for (var i = 0; i < mapFilterFields.length; i++) {
+    mapFilterFields[i].removeAttribute('disabled');
+  }
+
+  for (var i = 0; i < adFormFields.length; i++) {
+    adFormFields[i].removeAttribute('disabled');
+  }
+
+  adFormAddressField.setAttribute('value', setAddress());
+};
+
+var setInactiveMod = function () {
+  map.classList.add('map--faded');
+  adForm.classList.add('ad-form--disabled');
+
+  for (var i = 0; i < mapFilterFields.length; i++) {
+    mapFilterFields[i].setAttribute('disabled', 'disabled');
+  }
+
+  for (var i = 0; i < adFormFields.length; i++) {
+    adFormFields[i].setAttribute('disabled', 'disabled');
+  }
+
+  adFormAddressField.setAttribute('value', setAddress());
+};
+
+var setAddress = function () {
+  return map.classList.contains('map--faded') ?
+  (mapPinMain.offsetLeft + Math.floor(mapPinMainWidth / 2)) + ',' +  (mapPinMain.offsetTop + Math.floor(mapPinMainHeight / 2)) :
+  (mapPinMain.offsetLeft + Math.floor(mapPinMainWidth / 2)) + ',' +  (mapPinMain.offsetTop + mapPinMainHeight + mapPinMainArrowHeight);
+}
+
+var compareRoomsVersusCapacity = function () {
+  return adFormRoomsField.value === 100 && adFormCapacityField.value === 0 ?
+  true :
+  adFormRoomsField.value >= adFormCapacityField.value && adFormRoomsField.value !== 100 && adFormCapacityField.value !== 0;
+};
+
+var setCapacityValidity = function () {
+  if (!compareRoomsVersusCapacity()) {
+    adFormCapacityField.setCustomValidity('Не то пальто');
+  } else {
+    adFormCapacityField.setCustomValidity('');
+  }
+};
+
+/*
 var createCard = function (data) {
   var card = cardPopup.cloneNode(true);
   var cardAvatar = card.querySelector('.popup__avatar');
@@ -174,6 +245,7 @@ var createCard = function (data) {
 
   return card;
 };
+*/
 
 var database = getMassiveDatabase();
 
@@ -182,9 +254,33 @@ for (var i = 0; i < database.length; i++) {
   addPin(mapPin);
 }
 
-mapPinsField.appendChild(pinFragment);
+setInactiveMod();
 
+mapPinMain.addEventListener('mousedown', function (evt) {
+  if (evt.button === 0) {
+    setActiveMod();
+    mapPinsField.appendChild(pinFragment);
+  }
+});
+
+mapPinMain.addEventListener('keydown', function (evt) {
+  if (evt.key === CONFIRM_EVT_KEY) {
+    setActiveMod();
+    mapPinsField.appendChild(pinFragment);
+  }
+});
+
+setCapacityValidity();
+
+adFormRoomsField.addEventListener('change', function() {
+  setCapacityValidity();
+});
+
+adFormCapacityField.addEventListener('change', function() {
+  setCapacityValidity();
+});
+
+/*
 var offerCard = createCard(database[0]);
 map.insertBefore(offerCard, mapFilter);
-
-map.classList.remove('map--faded');
+*/
