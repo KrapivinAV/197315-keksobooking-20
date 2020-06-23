@@ -160,7 +160,7 @@ var setActiveMod = function () {
     mapFilterFields[i].removeAttribute('disabled');
   }
 
-  for (var i = 0; i < adFormFields.length; i++) {
+  for (i = 0; i < adFormFields.length; i++) {
     adFormFields[i].removeAttribute('disabled');
   }
 
@@ -175,7 +175,7 @@ var setInactiveMod = function () {
     mapFilterFields[i].setAttribute('disabled', 'disabled');
   }
 
-  for (var i = 0; i < adFormFields.length; i++) {
+  for (i = 0; i < adFormFields.length; i++) {
     adFormFields[i].setAttribute('disabled', 'disabled');
   }
 
@@ -184,14 +184,14 @@ var setInactiveMod = function () {
 
 var setAddress = function () {
   return map.classList.contains('map--faded') ?
-  (mapPinMain.offsetLeft + Math.floor(mapPinMainWidth / 2)) + ',' +  (mapPinMain.offsetTop + Math.floor(mapPinMainHeight / 2)) :
-  (mapPinMain.offsetLeft + Math.floor(mapPinMainWidth / 2)) + ',' +  (mapPinMain.offsetTop + mapPinMainHeight + mapPinMainArrowHeight);
-}
+    (mapPinMain.offsetLeft + Math.floor(mapPinMainWidth / 2)) + ',' + (mapPinMain.offsetTop + Math.floor(mapPinMainHeight / 2)) :
+    (mapPinMain.offsetLeft + Math.floor(mapPinMainWidth / 2)) + ',' + (mapPinMain.offsetTop + mapPinMainHeight + mapPinMainArrowHeight);
+};
 
 var compareRoomsVersusCapacity = function () {
   return adFormRoomsField.value === 100 && adFormCapacityField.value === 0 ?
-  true :
-  adFormRoomsField.value >= adFormCapacityField.value && adFormRoomsField.value !== 100 && adFormCapacityField.value !== 0;
+    true :
+    adFormRoomsField.value >= adFormCapacityField.value && adFormRoomsField.value !== 100 && adFormCapacityField.value !== 0;
 };
 
 var setCapacityValidity = function () {
@@ -272,11 +272,11 @@ mapPinMain.addEventListener('keydown', function (evt) {
 
 setCapacityValidity();
 
-adFormRoomsField.addEventListener('change', function() {
+adFormRoomsField.addEventListener('change', function () {
   setCapacityValidity();
 });
 
-adFormCapacityField.addEventListener('change', function() {
+adFormCapacityField.addEventListener('change', function () {
   setCapacityValidity();
 });
 
