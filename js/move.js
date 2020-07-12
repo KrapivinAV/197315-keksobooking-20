@@ -10,13 +10,12 @@ window.move = (function () {
   var adFormAddressField = document.querySelector('#address');
 
   var getCurrentCoordinate = function (value, min, max) {
-    switch (value) {
-      case value < min:
-        return min;
-      case value > max:
-        return max;
-      default:
-        return value;
+    if (value < min) {
+      return min;
+    } else if (value > max) {
+      return max;
+    } else {
+      return value;
     }
   };
 
