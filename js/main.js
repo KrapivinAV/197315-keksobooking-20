@@ -19,6 +19,10 @@ window.main = (function () {
   var adFormPhotoField = adForm.querySelector('#images');
 
   var setActiveMod = function () {
+    mapPinMain.removeEventListener('mousedown', onPinMainPrimaryButtonDown);
+
+    mapPinMain.removeEventListener('keydown', onPinMainEnterPress);
+
     map.classList.remove('map--faded');
     adForm.classList.remove('ad-form--disabled');
 
@@ -84,17 +88,17 @@ window.main = (function () {
 
   var offerData = window.map.getData();
 
+  var onPinMainPrimaryButtonDown = function (evt) {
+    window.action.isPrimaryButtonDownEvent(evt, setActiveMod);
+  };
+
+  var onPinMainEnterPress = function (evt) {
+    window.action.isEnterEvent(evt, setActiveMod);
+  };
+
   setInactiveMod();
 
-  mapPinMain.addEventListener('mousedown', function (evt) {
-    if (evt.button === window.constants.PRIMARY_BUTTON_DOWN) {
-      setActiveMod();
-    }
-  });
+  mapPinMain.addEventListener('mousedown', onPinMainPrimaryButtonDown);
 
-  mapPinMain.addEventListener('keydown', function (evt) {
-    if (evt.key === window.constants.CONFIRM_EVT_KEY) {
-      setActiveMod();
-    }
-  });
+  mapPinMain.addEventListener('keydown', onPinMainEnterPress);
 })();
