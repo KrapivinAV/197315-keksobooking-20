@@ -3,7 +3,10 @@
 window.move = (function () {
 
   var mapPinsField = document.querySelector('.map__pins');
+  var mapPinsFieldWidth = mapPinsField.clientWidth;
   var mapPinMain = mapPinsField.querySelector('.map__pin--main');
+  var mapPinMainWidth = mapPinMain.offsetWidth;
+  var mapPinMainHeight = mapPinMain.offsetHeight;
   var adFormAddressField = document.querySelector('#address');
 
   var getCurrentCoordinate = function (value, min, max) {
@@ -42,9 +45,8 @@ window.move = (function () {
         y: moveEvt.clientY
       };
 
-      mapPinMain.style.top = getCurrentCoordinate(mapPinMain.offsetTop - shift.y, ) + 'px';
-      mapPinMain.style.left = (mapPinMain.offsetLeft - shift.x) + 'px';
-
+      mapPinMain.style.top = getCurrentCoordinate(mapPinMain.offsetTop - shift.y, window.constants.PIN_COORDINATE_Y_MIN - mapPinMainHeight - window.constants.MAP_PIN_MAIN_ARROW_HEIGHT, window.constants.PIN_COORDINATE_Y_MAX - mapPinMainHeight - window.constants.MAP_PIN_MAIN_ARROW_HEIGHT) + 'px';
+      mapPinMain.style.left = getCurrentCoordinate(mapPinMain.offsetLeft - shift.x, mapPinMainWidth / 2 * (-1), mapPinsFieldWidth - (mapPinMainWidth / 2)) + 'px';
     };
 
     var onMouseUp = function (upEvt) {
