@@ -12,8 +12,8 @@ window.data = (function () {
 
   var getGuestsQuantity = function (roomsQuantity) {
     return roomsQuantity !== window.constants.ROOMS_VARIANTS[window.constants.ROOMS_VARIANTS.length - 1] ?
-    getRandomIntegerValue(1, roomsQuantity) :
-    'Не для гостей';
+      getRandomIntegerValue(1, roomsQuantity) :
+      'Не для гостей';
   };
 
   var getSet = function (basisMassive) {

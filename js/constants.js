@@ -53,5 +53,10 @@ window.constants = (function () {
     ],
     CONFIRM_EVT_KEY: 'Enter',
     CANCEL_EVT_KEY: 'Escape',
-  }
+    PRIMARY_BUTTON_DOWN: 0,
+    SUB_STRING_BEGIN: 0,
+    SUB_STRING_LENGTH: 5,
+    FIRST_OFFER: 0,
+    LAST_OFFER: 5
+  };
 })();

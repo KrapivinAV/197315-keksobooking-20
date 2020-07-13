@@ -3,7 +3,11 @@
 window.pin = (function () {
 
   return {
+<<<<<<< HEAD
     create: function(database) {
+=======
+    create: function (database) {
+>>>>>>> 9dc7e1b1840e64a1aef13cc716b109e888987194
       var pinTemplate = document.querySelector('#pin').content;
       var pinButton = pinTemplate.querySelector('.map__pin');
       var pinFragment = document.createDocumentFragment();
@@ -21,6 +25,7 @@ window.pin = (function () {
         pinFragment.appendChild(newPin);
       };
 
+<<<<<<< HEAD
       for (var i = 0; i < database.length; i++) {
         var mapPin = createPin(database[i]);
         addPin(mapPin);
@@ -29,4 +34,14 @@ window.pin = (function () {
       return pinFragment;
     }
   }
+=======
+      database.forEach(function (item) {
+        var mapPin = createPin(item);
+        addPin(mapPin);
+      });
+
+      return pinFragment;
+    }
+  };
+>>>>>>> 9dc7e1b1840e64a1aef13cc716b109e888987194
 })();
