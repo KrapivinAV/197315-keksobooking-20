@@ -45,7 +45,7 @@ window.move = (function () {
       };
 
       mapPinMain.style.top = getCurrentCoordinate(mapPinMain.offsetTop - shift.y, window.constants.PIN_COORDINATE_Y_MIN - mapPinMainHeight - window.constants.MAP_PIN_MAIN_ARROW_HEIGHT, window.constants.PIN_COORDINATE_Y_MAX - mapPinMainHeight - window.constants.MAP_PIN_MAIN_ARROW_HEIGHT) + 'px';
-      mapPinMain.style.left = getCurrentCoordinate(mapPinMain.offsetLeft - shift.x, mapPinMainWidth / 2 * (-1), mapPinsFieldWidth - (mapPinMainWidth / 2)) + 'px';
+      mapPinMain.style.left = getCurrentCoordinate(mapPinMain.offsetLeft - shift.x, -mapPinMainWidth / 2, mapPinsFieldWidth - (mapPinMainWidth / 2)) + 'px';
     };
 
     var onMouseUp = function (upEvt) {

@@ -34,41 +34,80 @@ window.main = (function () {
       item.removeAttribute('disabled');
     });
 
-    mapPinsField.appendChild(window.pin.create(offerData));
+
+    var onLoadDataSuccess = function (data) {
+      var offerData = window.map.getData(data);
+
+      var onMapPinsFieldClick = function (evt) {
+        window.map.getCard(evt, offerData);
+      };
+
+      var onMapPinsFieldEnterPress = function (evt) {
+        if (evt.key === window.constants.CONFIRM_EVT_KEY) {
+          window.map.getCard(evt, offerData);
+        }
+      };
+
+      mapPinsField.appendChild(window.pin.create(offerData));
+
+      mapPinsField.addEventListener('click', onMapPinsFieldClick);
+
+      mapPinsField.addEventListener('keydown', onMapPinsFieldEnterPress);
+    };
+
+    var onLoadDataError = function (errorMessage) {
+      var node = document.createElement('div');
+      node.style = 'z-index: 100; margin: 0 auto; text-align: center; background-color: red;';
+      node.style.position = 'absolute';
+      node.style.left = 0;
+      node.style.right = 0;
+      node.style.fontSize = '30px';
+
+      node.textContent = errorMessage;
+      document.body.insertAdjacentElement('afterbegin', node);
+    };
+
+    window.loadData.load(onLoadDataSuccess, onLoadDataError);
 
     window.form.setCapacityValidity();
 
     adFormAddressField.setAttribute('value', window.form.setAddress());
 
-    adFormRoomsField.addEventListener('change', window.form.setCapacityValidity);
+    var onAdFormRoomsFieldChange = function () {
+      window.form.setCapacityValidity();
+    };
 
-    adFormCapacityField.addEventListener('change', window.form.setCapacityValidity);
+    var onAdFormCapacityFieldChange = function () {
+      window.form.setCapacityValidity();
+    };
 
-    adFormTypeField.addEventListener('change', window.form.setPriceFieldAttributes);
+    var onAdFormTypeFieldChange = function () {
+      window.form.setPriceFieldAttributes();
+    };
 
-    adFormCheckInField.addEventListener('change', function (evt) {
+    var onAdFormCheckInFieldChange = function (evt) {
       window.form.equalizeTimeFields(evt, adFormCheckOutField);
-    });
+    };
 
-    adFormCheckOutField.addEventListener('change', function (evt) {
+    var onAdFormCheckOutFieldChange = function (evt) {
       window.form.equalizeTimeFields(evt, adFormCheckInField);
-    });
+    };
 
-    adFormAvatarField.addEventListener('change', function (evt) {
+    var onAdFormAvatarFieldChange = function (evt) {
       window.form.setFileTypeValidity(evt.target);
-    });
+    };
 
-    adFormPhotoField.addEventListener('change', function (evt) {
+    var onAdFormPhotoFieldChange = function (evt) {
       window.form.setFileTypeValidity(evt.target);
-    });
+    };
 
-    mapPinsField.addEventListener('click', window.map.getCard);
-
-    mapPinsField.addEventListener('keydown', function (evt) {
-      if (evt.key === window.constants.CONFIRM_EVT_KEY) {
-        window.map.getCard();
-      }
-    });
+    adFormRoomsField.addEventListener('change', onAdFormRoomsFieldChange);
+    adFormCapacityField.addEventListener('change', onAdFormCapacityFieldChange);
+    adFormTypeField.addEventListener('change', onAdFormTypeFieldChange);
+    adFormCheckInField.addEventListener('change', onAdFormCheckInFieldChange);
+    adFormCheckOutField.addEventListener('change', onAdFormCheckOutFieldChange);
+    adFormAvatarField.addEventListener('change', onAdFormAvatarFieldChange);
+    adFormPhotoField.addEventListener('change', onAdFormPhotoFieldChange);
   };
 
   var setInactiveMod = function () {
@@ -85,8 +124,6 @@ window.main = (function () {
 
     adFormAddressField.setAttribute('value', window.form.setAddress());
   };
-
-  var offerData = window.map.getData();
 
   var onPinMainPrimaryButtonDown = function (evt) {
     window.action.isPrimaryButtonDownEvent(evt, setActiveMod);
