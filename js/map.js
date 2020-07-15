@@ -69,7 +69,7 @@ window.map = (function () {
       var validityData = [];
 
       data.forEach(function (item) {
-        if (item.offer) {
+        if (item.offer && item.offer !== {}) {
           validityData.push(item);
         }
       });
