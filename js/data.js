@@ -1,6 +1,6 @@
 'use strict';
 
-window.loadData = (function () {
+window.data = (function () {
   var URL = 'https://javascript.pages.academy/keksobooking/data';
   var StatusCode = {
     OK: 200

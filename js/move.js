@@ -7,7 +7,6 @@ window.move = (function () {
   var mapPinMain = mapPinsField.querySelector('.map__pin--main');
   var mapPinMainWidth = mapPinMain.offsetWidth;
   var mapPinMainHeight = mapPinMain.offsetHeight;
-  var adFormAddressField = document.querySelector('#address');
 
   var getCurrentCoordinate = function (value, min, max) {
     if (value < min) {
@@ -62,7 +61,7 @@ window.move = (function () {
         mapPinMain.addEventListener('click', onClickPreventDefault);
       }
 
-      adFormAddressField.setAttribute('value', window.form.setAddress());
+      window.form.setAddress();
     };
 
     document.addEventListener('mousemove', onMouseMove);

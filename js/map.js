@@ -80,6 +80,14 @@ window.map = (function () {
 
       var currentData = validityData.slice(window.constants.FIRST_OFFER, window.constants.LAST_OFFER);
       return currentData;
+    },
+
+    activate: function () {
+      map.classList.remove('map--faded');
+    },
+
+    deactivate: function () {
+      map.classList.add('map--faded');
     }
   };
 })();
