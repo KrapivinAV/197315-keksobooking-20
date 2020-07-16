@@ -74,3 +74,5 @@ window.main = (function () {
 
   setInactiveMod();
 })();
+
+// повторный пр для 6-2
