@@ -57,6 +57,7 @@ window.constants = (function () {
     SUB_STRING_BEGIN: 0,
     SUB_STRING_LENGTH: 5,
     FIRST_OFFER: 0,
-    LAST_OFFER: 5
+    LAST_OFFER: 5,
+    PIN_FIRST_AVAILABLE_INDEX: 2
   };
 })();
