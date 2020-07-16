@@ -81,12 +81,12 @@ window.card = (function () {
       }
 
       if (data.offer.photos && data.offer.photos.length !== 0) {
-        for (i = 0; i < data.offer.photos.length; i++) {
-          cardPhoto.src = data.offer.photos[i];
-          if (i !== (data.offer.photos.length - 1)) {
+        data.offer.photos.forEach(function (item, j) {
+          cardPhoto.src = item;
+          if (j !== (data.offer.photos.length - 1)) {
             cardPhotos.appendChild(cardPhoto.cloneNode());
           }
-        }
+        });
       } else {
         cardPhotos.classList.add('hidden');
       }

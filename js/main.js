@@ -14,6 +14,18 @@ window.main = (function () {
     window.action.isEnterEvent(evt, setActiveMod);
   };
 
+  var offerData = [];
+
+  var onMapPinsFieldClick = function (evt) {
+    window.map.getCard(evt, offerData);
+  };
+
+  var onMapPinsFieldEnterPress = function (evt) {
+    if (evt.key === window.constants.CONFIRM_EVT_KEY) {
+      window.map.getCard(evt, offerData);
+    }
+  };
+
   var setActiveMod = function () {
     mapPinMain.removeEventListener('mousedown', onPinMainPrimaryButtonDown);
     mapPinMain.removeEventListener('keydown', onPinMainEnterPress);
@@ -22,17 +34,7 @@ window.main = (function () {
     window.form.activate();
 
     var onLoadDataSuccess = function (data) {
-      var offerData = window.map.getData(data);
-
-      var onMapPinsFieldClick = function (evt) {
-        window.map.getCard(evt, offerData);
-      };
-
-      var onMapPinsFieldEnterPress = function (evt) {
-        if (evt.key === window.constants.CONFIRM_EVT_KEY) {
-          window.map.getCard(evt, offerData);
-        }
-      };
+      offerData = window.map.getData(data);
 
       mapPinsField.appendChild(window.pin.create(offerData));
       window.filter.activate();

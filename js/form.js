@@ -46,6 +46,14 @@ window.form = (function () {
     setFileTypeValidity(evt.target);
   };
 
+  var setCurrentAddress = function () {
+    var x = mapPinMain.offsetLeft + Math.floor(mapPinMainWidth / 2);
+    var y = map.classList.contains('map--faded') ?
+      mapPinMain.offsetTop + Math.floor(mapPinMainHeight / 2) :
+      mapPinMain.offsetTop + mapPinMainHeight + window.constants.MAP_PIN_MAIN_ARROW_HEIGHT;
+    adFormAddressField.setAttribute('value', x + ', ' + y);
+  };
+
   var setCapacityValidity = function () {
     var rooms = parseInt(adFormRoomsField.value, 10);
     var capacity = parseInt(adFormCapacityField.value, 10);
@@ -77,11 +85,7 @@ window.form = (function () {
 
   return {
     setAddress: function () {
-      var x = mapPinMain.offsetLeft + Math.floor(mapPinMainWidth / 2);
-      var y = map.classList.contains('map--faded') ?
-        mapPinMain.offsetTop + Math.floor(mapPinMainHeight / 2) :
-        mapPinMain.offsetTop + mapPinMainHeight + window.constants.MAP_PIN_MAIN_ARROW_HEIGHT;
-      adFormAddressField.setAttribute('value', x + ', ' + y);
+      setCurrentAddress();
     },
 
     activate: function () {
@@ -91,7 +95,7 @@ window.form = (function () {
       });
 
       setCapacityValidity();
-      window.form.setAddress();
+      setCurrentAddress();
 
       adFormRoomsField.addEventListener('change', onAdFormRoomsFieldChange);
       adFormCapacityField.addEventListener('change', onAdFormCapacityFieldChange);
@@ -108,7 +112,7 @@ window.form = (function () {
         item.setAttribute('disabled', 'disabled');
       });
 
-      window.form.setAddress();
+      setCurrentAddress();
 
       adFormRoomsField.removeEventListener('change', onAdFormRoomsFieldChange);
       adFormCapacityField.removeEventListener('change', onAdFormCapacityFieldChange);
