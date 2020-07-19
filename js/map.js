@@ -3,9 +3,17 @@
 window.map = (function () {
 
   var map = document.querySelector('.map');
+  var mapPinMain = map.querySelector('.map__pin--main');
   var mapPinsField = map.querySelector('.map__pins');
   var mapFilter = map.querySelector('.map__filters-container');
-  var mapFilterForm = map.querySelector('.map__filters');
+
+  var onPinMainPrimaryButtonDown = function (evt) {
+    window.action.isPrimaryButtonDownEvent(evt, window.main.setActiveMode);
+  };
+
+  var onPinMainEnterPress = function (evt) {
+    window.action.isEnterEvent(evt, window.main.setActiveMode);
+  };
 
   var getElementNumber = function (evt) {
     var element = evt.target.tagName.toLowerCase();
@@ -72,7 +80,7 @@ window.map = (function () {
   var onMapFilterFormChange = function () {
     var mapCurrentPinSet = mapPinsField.querySelectorAll('.map__pin');
     if (map.querySelector('.popup')) {
-      window.map.closeCard();
+      closePopup();
     }
 
     for (var i = mapCurrentPinSet.length - 1; i > window.constants.MAIN_PIN_POSITION; i--) {
@@ -90,7 +98,6 @@ window.map = (function () {
     mapPinsField.appendChild(window.pin.create(currentOfferSet));
     window.filter.activate();
 
-    mapFilterForm.addEventListener('change', window.debounce(onMapFilterFormChange));
     mapPinsField.addEventListener('click', onMapPinsFieldClick);
     mapPinsField.addEventListener('keydown', onMapPinsFieldEnterPress);
   };
@@ -108,8 +115,8 @@ window.map = (function () {
   };
 
   return {
-    closeCard: function () {
-      onCardCloseClick();
+    setFilterParameters: function () {
+      onMapFilterFormChange();
     },
 
     getCard: function (evt, data) {
@@ -138,15 +145,20 @@ window.map = (function () {
     activate: function () {
       map.classList.remove('map--faded');
 
+      mapPinMain.removeEventListener('mousedown', onPinMainPrimaryButtonDown);
+      mapPinMain.removeEventListener('keydown', onPinMainEnterPress);
+
       window.data.load(onLoadDataSuccess, onLoadDataError);
     },
 
     deactivate: function () {
       if (!map.classList.contains('map--faded')) {
-        mapFilterForm.removeEventListener('change', window.debounce(onMapFilterFormChange));
         mapPinsField.removeEventListener('click', onMapPinsFieldClick);
         mapPinsField.removeEventListener('keydown', onMapPinsFieldEnterPress);
       }
+
+      mapPinMain.addEventListener('mousedown', onPinMainPrimaryButtonDown);
+      mapPinMain.addEventListener('keydown', onPinMainEnterPress);
 
       map.classList.add('map--faded');
     }

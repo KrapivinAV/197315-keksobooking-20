@@ -75,9 +75,12 @@ window.filter = (function () {
       mapFilterFields.forEach(function (item) {
         item.removeAttribute('disabled');
       });
+      mapFilterForm.addEventListener('change', window.debounce(window.map.setFilterParameters));
     },
 
     deactivate: function () {
+      mapFilterForm.reset();
+      mapFilterForm.removeEventListener('change', window.debounce(window.map.setFilterParameters));
       mapFilterFields.forEach(function (item) {
         item.setAttribute('disabled', 'disabled');
       });
