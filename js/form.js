@@ -89,10 +89,34 @@ window.form = (function () {
     }
   };
 
+  var closeSuccessMessage = function (element) {
+    document.removeEventListener('click', onSuccessMassageOutClick);
+    document.removeEventListener('keydown', onSuccessMassageEscPress);
+    main.removeChild(element);
+  };
+
+  var onSuccessMassageOutClick = function (evt) {
+    var successMessage = main.querySelector('.success');
+    if (evt.target === successMessage) {
+      closeSuccessMessage(successMessage);
+    }
+  };
+
+  var onSuccessMassageEscPress = function (evt) {
+    var successMessage = main.querySelector('.success');
+    if (evt.key === window.constants.CANCEL_EVT_KEY) {
+      evt.preventDefault();
+      closeSuccessMessage(successMessage);
+    }
+  };
+
   var onUploadDataSuccess = function () {
     var successMessage = successPopup.cloneNode(true);
     main.appendChild(successMessage);
     window.main.setInactiveMode();
+
+    document.addEventListener('click', onSuccessMassageOutClick);
+    document.addEventListener('keydown', onSuccessMassageEscPress);
   };
 
   var onUploadDataError = function () {
