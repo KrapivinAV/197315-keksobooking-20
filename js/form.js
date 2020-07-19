@@ -18,6 +18,7 @@ window.form = (function () {
   var adFormCheckOutField = adForm.querySelector('#timeout');
   var adFormAvatarField = adForm.querySelector('#avatar');
   var adFormPhotoField = adForm.querySelector('#images');
+  var adFormResetButton = adForm.querySelector('.ad-form__reset');
   var successTemplate = document.querySelector('#success').content;
   var successPopup = successTemplate.querySelector('.success');
   var errorTemplate = document.querySelector('#error').content;
@@ -104,6 +105,18 @@ window.form = (function () {
     evt.preventDefault();
   };
 
+  var onAdFormResetButtonClick = function (evt) {
+    evt.preventDefault();
+    window.main.setInactiveMode();
+  };
+
+  var onAdFormResetButtonEnterPress = function (evt) {
+    if (evt.key === window.constants.CONFIRM_EVT_KEY) {
+      evt.preventDefault();
+      window.main.setInactiveMode();
+    }
+  };
+
   var activateForm = function () {
     adForm.classList.remove('ad-form--disabled');
     adFormFields.forEach(function (item) {
@@ -121,6 +134,8 @@ window.form = (function () {
     adFormAvatarField.addEventListener('change', onAdFormAvatarFieldChange);
     adFormPhotoField.addEventListener('change', onAdFormPhotoFieldChange);
     adForm.addEventListener('submit', onAdFormSubmit);
+    adFormResetButton.addEventListener('click', onAdFormResetButtonClick);
+    adFormResetButton.addEventListener('keydown', onAdFormResetButtonEnterPress);
   };
 
   var deactivateForm = function () {
@@ -140,6 +155,8 @@ window.form = (function () {
     adFormAvatarField.removeEventListener('change', onAdFormAvatarFieldChange);
     adFormPhotoField.removeEventListener('change', onAdFormPhotoFieldChange);
     adForm.removeEventListener('submit', onAdFormSubmit);
+    adFormResetButton.removeEventListener('click', onAdFormResetButtonClick);
+    adFormResetButton.removeEventListener('keydown', onAdFormResetButtonEnterPress);
   };
 
   return {

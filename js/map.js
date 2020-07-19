@@ -77,15 +77,20 @@ window.map = (function () {
     }
   };
 
-  var onMapFilterFormChange = function () {
+  var removeAllOfferPins = function () {
     var mapCurrentPinSet = mapPinsField.querySelectorAll('.map__pin');
-    if (map.querySelector('.popup')) {
-      closePopup();
-    }
 
     for (var i = mapCurrentPinSet.length - 1; i > window.constants.MAIN_PIN_POSITION; i--) {
       mapPinsField.removeChild(mapCurrentPinSet[i]);
     }
+  };
+
+  var onMapFilterFormChange = function () {
+    if (map.querySelector('.popup')) {
+      closePopup();
+    }
+
+    removeAllOfferPins();
 
     currentOfferSet = window.filter.getCurrentOfferSet(offerData);
     mapPinsField.appendChild(window.pin.create(currentOfferSet));
@@ -155,7 +160,16 @@ window.map = (function () {
       if (!map.classList.contains('map--faded')) {
         mapPinsField.removeEventListener('click', onMapPinsFieldClick);
         mapPinsField.removeEventListener('keydown', onMapPinsFieldEnterPress);
+
+        if (map.querySelector('.popup')) {
+          closePopup();
+        }
+
+        removeAllOfferPins();
       }
+
+      mapPinMain.style.top = window.constants.BASIS_PIN_MAIN_TOP + 'px';
+      mapPinMain.style.left = window.constants.BASIS_PIN_MAIN_LEFT + 'px';
 
       mapPinMain.addEventListener('mousedown', onPinMainPrimaryButtonDown);
       mapPinMain.addEventListener('keydown', onPinMainEnterPress);

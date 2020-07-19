@@ -14,6 +14,8 @@ window.constants = (function () {
     PIN_WIDTH: 50,
     PIN_HEIGHT: 70,
     MAP_PIN_MAIN_ARROW_HEIGHT: 22,
+    BASIS_PIN_MAIN_TOP: 375,
+    BASIS_PIN_MAIN_LEFT: 570,
     TYPES: [
       'palace',
       'flat',
