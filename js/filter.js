@@ -88,7 +88,7 @@ window.filter = (function () {
       for (var i = 0; i < data.length; i++) {
         compareTypeParameter(data[i]);
         if (currentOfferSet.length === 5) {
-          return currentOfferSet;
+          break;
         }
       }
       return currentOfferSet;

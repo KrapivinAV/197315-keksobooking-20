@@ -5,6 +5,7 @@ window.map = (function () {
   var map = document.querySelector('.map');
   var mapPinsField = map.querySelector('.map__pins');
   var mapFilter = map.querySelector('.map__filters-container');
+  var mapFilterForm = map.querySelector('.map__filters');
 
   var getElementNumber = function (evt) {
     var element = evt.target.tagName.toLowerCase();
@@ -37,6 +38,7 @@ window.map = (function () {
 
   var openPopup = function (evt, index, data) {
     map.insertBefore(window.card.create(data[index - window.constants.PIN_FIRST_AVAILABLE_INDEX]), mapFilter);
+    mapPinsField.children[index].classList.add('map__pin--active');
     var cardClose = document.querySelector('.popup__close');
 
     document.addEventListener('keydown', onPopupEscPress);
@@ -54,6 +56,57 @@ window.map = (function () {
     map.querySelector('.popup').remove();
   };
 
+  var offerData = [];
+  var currentOfferSet = [];
+
+  var onMapPinsFieldClick = function (evt) {
+    window.map.getCard(evt, currentOfferSet);
+  };
+
+  var onMapPinsFieldEnterPress = function (evt) {
+    if (evt.key === window.constants.CONFIRM_EVT_KEY) {
+      window.map.getCard(evt, currentOfferSet);
+    }
+  };
+
+  var onMapFilterFormChange = function () {
+    var mapCurrentPinSet = mapPinsField.querySelectorAll('.map__pin');
+    if (map.querySelector('.popup')) {
+      window.map.closeCard();
+    }
+
+    for (var i = mapCurrentPinSet.length - 1; i > window.constants.MAIN_PIN_POSITION; i--) {
+      mapPinsField.removeChild(mapCurrentPinSet[i]);
+    }
+
+    currentOfferSet = window.filter.getCurrentOfferSet(offerData);
+    mapPinsField.appendChild(window.pin.create(currentOfferSet));
+  };
+
+  var onLoadDataSuccess = function (data) {
+    offerData = window.map.getData(data);
+    currentOfferSet = window.filter.getCurrentOfferSet(offerData);
+
+    mapPinsField.appendChild(window.pin.create(currentOfferSet));
+    window.filter.activate();
+
+    mapFilterForm.addEventListener('change', window.debounce(onMapFilterFormChange));
+    mapPinsField.addEventListener('click', onMapPinsFieldClick);
+    mapPinsField.addEventListener('keydown', onMapPinsFieldEnterPress);
+  };
+
+  var onLoadDataError = function (errorMessage) {
+    var node = document.createElement('div');
+    node.style = 'z-index: 100; margin: 0 auto; text-align: center; background-color: red;';
+    node.style.position = 'absolute';
+    node.style.left = 0;
+    node.style.right = 0;
+    node.style.fontSize = '30px';
+
+    node.textContent = errorMessage;
+    document.body.insertAdjacentElement('afterbegin', node);
+  };
+
   return {
     closeCard: function () {
       onCardCloseClick();
@@ -62,6 +115,7 @@ window.map = (function () {
     getCard: function (evt, data) {
       if (map.querySelector('.popup')) {
         map.querySelector('.popup').remove();
+        map.querySelector('.map__pin--active').classList.remove('map__pin--active');
       }
       var elementNumber = getElementNumber(evt);
       if (elementNumber > 1) {
@@ -83,9 +137,17 @@ window.map = (function () {
 
     activate: function () {
       map.classList.remove('map--faded');
+
+      window.data.load(onLoadDataSuccess, onLoadDataError);
     },
 
     deactivate: function () {
+      if (!map.classList.contains('map--faded')) {
+        mapFilterForm.removeEventListener('change', window.debounce(onMapFilterFormChange));
+        mapPinsField.removeEventListener('click', onMapPinsFieldClick);
+        mapPinsField.removeEventListener('keydown', onMapPinsFieldEnterPress);
+      }
+
       map.classList.add('map--faded');
     }
   };

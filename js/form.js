@@ -2,6 +2,7 @@
 
 window.form = (function () {
 
+  var main = document.querySelector('main');
   var map = document.querySelector('.map');
   var mapPinMain = map.querySelector('.map__pin--main');
   var mapPinMainWidth = mapPinMain.offsetWidth;
@@ -17,6 +18,10 @@ window.form = (function () {
   var adFormCheckOutField = adForm.querySelector('#timeout');
   var adFormAvatarField = adForm.querySelector('#avatar');
   var adFormPhotoField = adForm.querySelector('#images');
+  var successTemplate = document.querySelector('#success').content;
+  var successPopup = successTemplate.querySelector('.success');
+  var errorTemplate = document.querySelector('#error').content;
+  var errorPopup = errorTemplate.querySelector('.error');
 
   var onAdFormRoomsFieldChange = function () {
     setCapacityValidity();
@@ -83,6 +88,21 @@ window.form = (function () {
     }
   };
 
+  var onUploadDataSuccess = function () {
+    var successMessage = successPopup.cloneNode(true);
+    main.appendChild(successMessage);
+  };
+
+  var onUploadDataError = function () {
+    var errorMessage = errorPopup.cloneNode(true);
+    main.appendChild(errorMessage);
+  };
+
+  var onAdFormSubmit = function (evt) {
+    window.data.upload(new FormData(adForm), onUploadDataSuccess, onUploadDataError);
+    evt.preventDefault();
+  };
+
   return {
     setAddress: function () {
       setCurrentAddress();
@@ -104,6 +124,7 @@ window.form = (function () {
       adFormCheckOutField.addEventListener('change', onAdFormCheckOutFieldChange);
       adFormAvatarField.addEventListener('change', onAdFormAvatarFieldChange);
       adFormPhotoField.addEventListener('change', onAdFormPhotoFieldChange);
+      adForm.addEventListener('submit', onAdFormSubmit);
     },
 
     deactivate: function () {
@@ -121,7 +142,7 @@ window.form = (function () {
       adFormCheckOutField.removeEventListener('change', onAdFormCheckOutFieldChange);
       adFormAvatarField.removeEventListener('change', onAdFormAvatarFieldChange);
       adFormPhotoField.removeEventListener('change', onAdFormPhotoFieldChange);
-
+      adForm.removeEventListener('submit', onAdFormSubmit);
     }
   };
 })();
