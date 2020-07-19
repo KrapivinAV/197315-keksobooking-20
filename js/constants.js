@@ -32,6 +32,10 @@ window.constants = (function () {
       house: 5000,
       bungalo: 0
     },
+    FILTER_PRICES: {
+      middleDown: 10000,
+      middleUp: 50000
+    },
     ROOMS_VARIANTS: [
       1,
       2,
@@ -58,6 +62,7 @@ window.constants = (function () {
     SUB_STRING_LENGTH: 5,
     FIRST_OFFER: 0,
     LAST_OFFER: 5,
-    PIN_FIRST_AVAILABLE_INDEX: 2
+    PIN_FIRST_AVAILABLE_INDEX: 2,
+    MAIN_PIN_POSITION: 0
   };
 })();

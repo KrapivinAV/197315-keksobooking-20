@@ -5,6 +5,7 @@ window.main = (function () {
   var map = document.querySelector('.map');
   var mapPinsField = map.querySelector('.map__pins');
   var mapPinMain = map.querySelector('.map__pin--main');
+  var mapFilterForm = map.querySelector('.map__filters');
 
   var onPinMainPrimaryButtonDown = function (evt) {
     window.action.isPrimaryButtonDownEvent(evt, setActiveMod);
@@ -15,15 +16,30 @@ window.main = (function () {
   };
 
   var offerData = [];
+  var currentOfferSet = [];
 
   var onMapPinsFieldClick = function (evt) {
-    window.map.getCard(evt, offerData);
+    window.map.getCard(evt, currentOfferSet);
   };
 
   var onMapPinsFieldEnterPress = function (evt) {
     if (evt.key === window.constants.CONFIRM_EVT_KEY) {
-      window.map.getCard(evt, offerData);
+      window.map.getCard(evt, currentOfferSet);
     }
+  };
+
+  var onMapFilterFormChange = function () {
+    var mapCurrentPinSet = mapPinsField.querySelectorAll('.map__pin');
+    if (map.querySelector('.popup')) {
+      window.map.closeCard();
+    }
+
+    for (var i = mapCurrentPinSet.length - 1; i > window.constants.MAIN_PIN_POSITION; i--) {
+      mapPinsField.removeChild(mapCurrentPinSet[i]);
+    }
+
+    currentOfferSet = window.filter.getCurrentOfferSet(offerData);
+    mapPinsField.appendChild(window.pin.create(currentOfferSet));
   };
 
   var setActiveMod = function () {
@@ -35,10 +51,12 @@ window.main = (function () {
 
     var onLoadDataSuccess = function (data) {
       offerData = window.map.getData(data);
+      currentOfferSet = window.filter.getCurrentOfferSet(offerData);
 
-      mapPinsField.appendChild(window.pin.create(offerData));
+      mapPinsField.appendChild(window.pin.create(currentOfferSet));
       window.filter.activate();
 
+      mapFilterForm.addEventListener('change', onMapFilterFormChange);
       mapPinsField.addEventListener('click', onMapPinsFieldClick);
       mapPinsField.addEventListener('keydown', onMapPinsFieldEnterPress);
     };
@@ -60,6 +78,7 @@ window.main = (function () {
 
   var setInactiveMod = function () {
     if (!map.classList.contains('map--faded')) {
+      mapFilterForm.removeEventListener('change', onMapFilterFormChange);
       mapPinsField.removeEventListener('click', onMapPinsFieldClick);
       mapPinsField.removeEventListener('keydown', onMapPinsFieldEnterPress);
     }
@@ -74,5 +93,3 @@ window.main = (function () {
 
   setInactiveMod();
 })();
-
-// повторный пр для 6-2

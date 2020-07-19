@@ -55,6 +55,10 @@ window.map = (function () {
   };
 
   return {
+    closeCard: function () {
+      onCardCloseClick();
+    },
+
     getCard: function (evt, data) {
       if (map.querySelector('.popup')) {
         map.querySelector('.popup').remove();
@@ -74,12 +78,7 @@ window.map = (function () {
         }
       });
 
-      /*
-      Здесь будет выборка по параметрам фильтра
-      */
-
-      var currentData = validityData.slice(window.constants.FIRST_OFFER, window.constants.LAST_OFFER);
-      return currentData;
+      return validityData;
     },
 
     activate: function () {
