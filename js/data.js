@@ -38,6 +38,16 @@ window.data = (function () {
           onError();
         }
       });
+
+      xhr.addEventListener('error', function () {
+        onError();
+      });
+      xhr.addEventListener('timeout', function () {
+        onError();
+      });
+
+      xhr.timeout = window.constants.TIMEOUT_IN_MS;
+
       xhr.open('POST', window.constants.URL.UPLOAD);
       xhr.send(data);
     }
