@@ -48,12 +48,12 @@ window.constants = (function () {
 
     EvtKey: {
       CONFIRM: 'Enter',
-      CANCEL: 'Escape',
+      CANCEL: 'Escape'
     },
 
     MIMESubStringParameters: {
       BEGIN: 0,
-      LENGTH: 5,
+      LENGTH: 5
     },
 
     PRIMARY_BUTTON_DOWN: 0
