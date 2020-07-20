@@ -21,8 +21,11 @@ window.form = (function () {
   var adFormResetButton = adForm.querySelector('.ad-form__reset');
   var successTemplate = document.querySelector('#success').content;
   var successPopup = successTemplate.querySelector('.success');
+  var successMessage;
   var errorTemplate = document.querySelector('#error').content;
   var errorPopup = errorTemplate.querySelector('.error');
+  var errorMessage;
+  var errorButton;
 
   var onAdFormRoomsFieldChange = function () {
     setCapacityValidity();
@@ -90,20 +93,18 @@ window.form = (function () {
   };
 
   var closeSuccessMessage = function (element) {
-    document.removeEventListener('click', onSuccessMassageOutClick);
-    document.removeEventListener('keydown', onSuccessMassageEscPress);
+    document.removeEventListener('click', onSuccessMessageOutClick);
+    document.removeEventListener('keydown', onSuccessMessageEscPress);
     main.removeChild(element);
   };
 
-  var onSuccessMassageOutClick = function (evt) {
-    var successMessage = main.querySelector('.success');
+  var onSuccessMessageOutClick = function (evt) {
     if (evt.target === successMessage) {
       closeSuccessMessage(successMessage);
     }
   };
 
-  var onSuccessMassageEscPress = function (evt) {
-    var successMessage = main.querySelector('.success');
+  var onSuccessMessageEscPress = function (evt) {
     if (evt.key === window.constants.CANCEL_EVT_KEY) {
       evt.preventDefault();
       closeSuccessMessage(successMessage);
@@ -111,17 +112,58 @@ window.form = (function () {
   };
 
   var onUploadDataSuccess = function () {
-    var successMessage = successPopup.cloneNode(true);
-    main.appendChild(successMessage);
+    var successBlock = successPopup.cloneNode(true);
+    main.appendChild(successBlock);
+    successMessage = main.querySelector('.success');
     window.main.setInactiveMode();
 
-    document.addEventListener('click', onSuccessMassageOutClick);
-    document.addEventListener('keydown', onSuccessMassageEscPress);
+    document.addEventListener('click', onSuccessMessageOutClick);
+    document.addEventListener('keydown', onSuccessMessageEscPress);
+  };
+
+  var closeErrorMessage = function (element) {
+    document.removeEventListener('click', onErrorMessageOutClick);
+    document.removeEventListener('keydown', onErrorMessageEscPress);
+    errorButton.removeEventListener('click', onErrorButtonClick);
+    errorButton.removeEventListener('keydown', onErrorButtonEnterPress);
+    main.removeChild(element);
+  };
+
+  var onErrorMessageOutClick = function (evt) {
+    var errorMessageText = main.querySelector('.error__message');
+    if (evt.target === errorMessage && evt.target !== errorMessageText) {
+      closeErrorMessage(errorMessage);
+    }
+  };
+
+  var onErrorMessageEscPress = function (evt) {
+    if (evt.key === window.constants.CANCEL_EVT_KEY) {
+      evt.preventDefault();
+      closeErrorMessage(errorMessage);
+    }
+  };
+
+  var onErrorButtonClick = function () {
+    closeErrorMessage(errorMessage);
+  };
+
+  var onErrorButtonEnterPress = function (evt) {
+    if (evt.key === window.constants.CONFIRM_EVT_KEY) {
+      evt.preventDefault();
+      closeErrorMessage(errorMessage);
+    }
   };
 
   var onUploadDataError = function () {
-    var errorMessage = errorPopup.cloneNode(true);
-    main.appendChild(errorMessage);
+    var errorBlock = errorPopup.cloneNode(true);
+    main.appendChild(errorBlock);
+    errorMessage = main.querySelector('.error');
+    errorButton = document.querySelector('.error__button');
+
+    document.addEventListener('click', onErrorMessageOutClick);
+    document.addEventListener('keydown', onErrorMessageEscPress);
+    errorButton.addEventListener('click', onErrorButtonClick);
+    errorButton.addEventListener('keydown', onErrorButtonEnterPress);
   };
 
   var onAdFormSubmit = function (evt) {

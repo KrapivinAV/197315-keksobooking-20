@@ -61,6 +61,7 @@ window.map = (function () {
     cardClose.removeEventListener('click', onCardCloseClick);
     cardClose.removeEventListener('keydown', onCardCloseEnterPress);
 
+    map.querySelector('.map__pin--active').classList.remove('map__pin--active');
     map.querySelector('.popup').remove();
   };
 
