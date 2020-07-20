@@ -48,11 +48,19 @@ window.form = (function () {
   };
 
   var onAdFormAvatarFieldChange = function (evt) {
-    setFileTypeValidity(evt.target);
+    var preview = adForm.querySelector('.ad-form-header__preview img');
+    setFileTypeValidity(evt.target, preview);
   };
 
   var onAdFormPhotoFieldChange = function (evt) {
-    setFileTypeValidity(evt.target);
+    var previewContainer = adForm.querySelector('.ad-form__photo');
+    var photo = document.createElement('img');
+    photo.setAttribute('alt', 'Фото предлагаемого жилого помещения');
+    photo.setAttribute('width', '70');
+    photo.setAttribute('height', '70');
+    previewContainer.appendChild(photo);
+    var preview = previewContainer.firstChild;
+    setFileTypeValidity(evt.target, preview);
   };
 
   var setCurrentAddress = function () {
@@ -84,11 +92,19 @@ window.form = (function () {
     field.value = evt.target.value;
   };
 
-  var setFileTypeValidity = function (fileInput) {
-    if (fileInput.files[0].type.slice(window.constants.MIMESubStringParameter.BEGIN, window.constants.MIMESubStringParameter.LENGTH) !== 'image') {
+  var setFileTypeValidity = function (fileInput, preview) {
+    var file = fileInput.files[0];
+    if (file.type.slice(window.constants.MIMESubStringParameter.BEGIN, window.constants.MIMESubStringParameter.LENGTH) !== 'image') {
       fileInput.setCustomValidity('Некорректный тип файла. Выберите файл-изображение');
     } else {
       fileInput.setCustomValidity('');
+      var reader = new FileReader();
+
+      reader.addEventListener('load', function () {
+        preview.src = reader.result;
+      });
+
+      reader.readAsDataURL(file);
     }
   };
 
