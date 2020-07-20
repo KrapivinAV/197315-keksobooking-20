@@ -4,18 +4,18 @@ window.filter = (function () {
   var map = document.querySelector('.map');
   var mapFilterForm = map.querySelector('.map__filters');
   var mapFilterFields = Array.from(mapFilterForm.children);
-  var featuresSet = mapFilterFields[4].querySelectorAll('.map__checkbox');
+  var featuresSet = mapFilterFields[window.constants.FilterFields.FEATURES].querySelectorAll('.map__checkbox');
 
   var currentOfferSet = [];
 
   var compareTypeParameter = function (dataItem) {
-    if (mapFilterFields[0].value === 'any' || mapFilterFields[0].value === dataItem.offer.type) {
+    if (mapFilterFields[window.constants.FilterFields.TYPE].value === 'any' || mapFilterFields[window.constants.FilterFields.TYPE].value === dataItem.offer.type) {
       comparePriceParameter(dataItem);
     }
   };
 
   var comparePriceParameter = function (dataItem) {
-    switch (mapFilterFields[1].value) {
+    switch (mapFilterFields[window.constants.FilterFields.PRICE].value) {
       case 'low':
         if (dataItem.offer.price < window.constants.FilterPrices.MIDDLE_DOWN) {
           compareRoomsParameter(dataItem);
@@ -37,13 +37,13 @@ window.filter = (function () {
   };
 
   var compareRoomsParameter = function (dataItem) {
-    if (mapFilterFields[2].value === 'any' || parseInt(mapFilterFields[2].value, 10) === dataItem.offer.rooms) {
+    if (mapFilterFields[window.constants.FilterFields.ROOMS].value === 'any' || parseInt(mapFilterFields[window.constants.FilterFields.ROOMS].value, 10) === dataItem.offer.rooms) {
       compareCapacityParameter(dataItem);
     }
   };
 
   var compareCapacityParameter = function (dataItem) {
-    if (mapFilterFields[3].value === 'any' || parseInt(mapFilterFields[3].value, 10) === dataItem.offer.guests) {
+    if (mapFilterFields[window.constants.FilterFields.CAPACITY].value === 'any' || parseInt(mapFilterFields[window.constants.FilterFields.CAPACITY].value, 10) === dataItem.offer.guests) {
       compareFeaturesParameter(dataItem);
     }
   };

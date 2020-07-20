@@ -37,6 +37,14 @@ window.constants = (function () {
       MIDDLE_UP: 50000
     },
 
+    FilterFields: {
+      TYPE: 0,
+      PRICE: 1,
+      ROOMS: 2,
+      CAPACITY: 3,
+      FEATURES: 4
+    },
+
     features: [
       'wifi',
       'dishwasher',
