@@ -56,6 +56,17 @@ window.constants = (function () {
       LENGTH: 5
     },
 
-    PRIMARY_BUTTON_DOWN: 0
+    URL: {
+      LOAD: 'https://javascript.pages.academy/keksobooking/data',
+      UPLOAD: 'https://javascript.pages.academy/keksobooking'
+    },
+
+    StatusCode: {
+      OK: 200
+    },
+
+    TIMEOUT_IN_MS: 10000,
+    PRIMARY_BUTTON_DOWN: 0,
+    DEBOUNCE_INTERVAL: 500
   };
 })();
