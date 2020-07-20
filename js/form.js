@@ -35,8 +35,8 @@ window.form = (function () {
     setCapacityValidity();
   };
 
-  var onAdFormTypeFieldChange = function () {
-    setPriceFieldAttributes();
+  var onAdFormTypeFieldChange = function (evt) {
+    setPriceFieldAttributes(evt);
   };
 
   var onAdFormCheckInFieldChange = function (evt) {
@@ -76,6 +76,7 @@ window.form = (function () {
   };
 
   var setPriceFieldAttributes = function (evt) {
+    console.log(evt);
     adFormPriceField.setAttribute('placeholder', window.constants.TYPES_MIN_PRICES[evt.target.value]);
     adFormPriceField.setAttribute('min', window.constants.TYPES_MIN_PRICES[evt.target.value]);
   };
