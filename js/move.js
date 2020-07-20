@@ -43,7 +43,7 @@ window.move = (function () {
         y: moveEvt.clientY
       };
 
-      mapPinMain.style.top = getCurrentCoordinate(mapPinMain.offsetTop - shift.y, window.constants.PIN_COORDINATE_Y_MIN - mapPinMainHeight - window.constants.MAP_PIN_MAIN_ARROW_HEIGHT, window.constants.PIN_COORDINATE_Y_MAX - mapPinMainHeight - window.constants.MAP_PIN_MAIN_ARROW_HEIGHT) + 'px';
+      mapPinMain.style.top = getCurrentCoordinate(mapPinMain.offsetTop - shift.y, window.constants.MapPinMainParameter.COORDINATE_Y_MIN - mapPinMainHeight - window.constants.MapPinMainParameter.ARROW_HEIGHT, window.constants.MapPinMainParameter.COORDINATE_Y_MAX - mapPinMainHeight - window.constants.MapPinMainParameter.ARROW_HEIGHT) + 'px';
       mapPinMain.style.left = getCurrentCoordinate(mapPinMain.offsetLeft - shift.x, -mapPinMainWidth / 2, mapPinsFieldWidth - (mapPinMainWidth / 2)) + 'px';
     };
 

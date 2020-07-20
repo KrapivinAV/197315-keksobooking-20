@@ -3,42 +3,49 @@
 window.constants = (function () {
 
   return {
-    QUANTITY_OF_OFFERS: 8,
-    PIN_COORDINATE_X_MIN: 0,
-    PIN_COORDINATE_Y_MIN: 130,
-    PIN_COORDINATE_Y_MAX: 630,
-    PRICE_MIN: 0,
-    PRICE_MAX: 100000,
-    CHECK_IN_OUT_TIME_MIN: 12,
-    CHECK_IN_OUT_TIME_MAX: 14,
-    PIN_WIDTH: 50,
-    PIN_HEIGHT: 70,
-    MAP_PIN_MAIN_ARROW_HEIGHT: 22,
-    TYPES: [
-      'palace',
-      'flat',
-      'house',
-      'bungalo'
-    ],
-    TRASLATED_TYPES: {
+    MapPinMainParameter: {
+      COORDINATE_Y_MIN: 130,
+      COORDINATE_Y_MAX: 630,
+      BASIS_TOP: 375,
+      BASIS_LEFT: 570,
+      ARROW_HEIGHT: 22,
+      COLLECTION_POSITION: 0
+    },
+
+    PinParameter: {
+      WIDTH: 50,
+      HEIGHT: 70,
+      FIRST_AVAILABLE_INDEX: 2
+    },
+
+    translatedTypes: {
       palace: 'Дворец',
       flat: 'Квартира',
       house: 'Дом',
       bungalo: 'Бунгало'
     },
-    TYPES_MIN_PRICES: {
-      palace: 10000,
-      flat: 1000,
-      house: 5000,
-      bungalo: 0
+
+    TypesMinPrice: {
+      PALACE: 10000,
+      FLAT: 1000,
+      HOUSE: 5000,
+      BUNGALO: 0
     },
-    ROOMS_VARIANTS: [
-      1,
-      2,
-      3,
-      100
-    ],
-    FEATURES: [
+
+    FilterPrice: {
+      MIDDLE_DOWN: 10000,
+      MIDDLE_UP: 50000
+    },
+
+    FilterField: {
+      TYPE: 0,
+      PRICE: 1,
+      ROOMS: 2,
+      CAPACITY: 3,
+      FEATURES: 4
+    },
+
+    features: [
       'wifi',
       'dishwasher',
       'parking',
@@ -46,18 +53,28 @@ window.constants = (function () {
       'elevator',
       'conditioner'
     ],
-    PHOTOS: [
-      'http://o0.github.io/assets/images/tokyo/hotel1.jpg',
-      'http://o0.github.io/assets/images/tokyo/hotel2.jpg',
-      'http://o0.github.io/assets/images/tokyo/hotel3.jpg'
-    ],
-    CONFIRM_EVT_KEY: 'Enter',
-    CANCEL_EVT_KEY: 'Escape',
+
+    EvtKey: {
+      CONFIRM: 'Enter',
+      CANCEL: 'Escape'
+    },
+
+    MIMESubStringParameter: {
+      BEGIN: 0,
+      LENGTH: 5
+    },
+
+    URL: {
+      LOAD: 'https://javascript.pages.academy/keksobooking/data',
+      UPLOAD: 'https://javascript.pages.academy/keksobooking'
+    },
+
+    StatusCode: {
+      OK: 200
+    },
+
+    TIMEOUT_IN_MS: 10000,
     PRIMARY_BUTTON_DOWN: 0,
-    SUB_STRING_BEGIN: 0,
-    SUB_STRING_LENGTH: 5,
-    FIRST_OFFER: 0,
-    LAST_OFFER: 5,
-    PIN_FIRST_AVAILABLE_INDEX: 2
+    DEBOUNCE_INTERVAL: 500
   };
 })();

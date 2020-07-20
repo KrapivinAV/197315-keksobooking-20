@@ -2,6 +2,7 @@
 
 window.form = (function () {
 
+  var main = document.querySelector('main');
   var map = document.querySelector('.map');
   var mapPinMain = map.querySelector('.map__pin--main');
   var mapPinMainWidth = mapPinMain.offsetWidth;
@@ -17,6 +18,14 @@ window.form = (function () {
   var adFormCheckOutField = adForm.querySelector('#timeout');
   var adFormAvatarField = adForm.querySelector('#avatar');
   var adFormPhotoField = adForm.querySelector('#images');
+  var adFormResetButton = adForm.querySelector('.ad-form__reset');
+  var successTemplate = document.querySelector('#success').content;
+  var successPopup = successTemplate.querySelector('.success');
+  var successMessage;
+  var errorTemplate = document.querySelector('#error').content;
+  var errorPopup = errorTemplate.querySelector('.error');
+  var errorMessage;
+  var errorButton;
 
   var onAdFormRoomsFieldChange = function () {
     setCapacityValidity();
@@ -26,8 +35,8 @@ window.form = (function () {
     setCapacityValidity();
   };
 
-  var onAdFormTypeFieldChange = function () {
-    setPriceFieldAttributes();
+  var onAdFormTypeFieldChange = function (evt) {
+    setPriceFieldAttributes(evt.target.value);
   };
 
   var onAdFormCheckInFieldChange = function (evt) {
@@ -50,7 +59,7 @@ window.form = (function () {
     var x = mapPinMain.offsetLeft + Math.floor(mapPinMainWidth / 2);
     var y = map.classList.contains('map--faded') ?
       mapPinMain.offsetTop + Math.floor(mapPinMainHeight / 2) :
-      mapPinMain.offsetTop + mapPinMainHeight + window.constants.MAP_PIN_MAIN_ARROW_HEIGHT;
+      mapPinMain.offsetTop + mapPinMainHeight + window.constants.MapPinMainParameter.ARROW_HEIGHT;
     adFormAddressField.setAttribute('value', x + ', ' + y);
   };
 
@@ -66,9 +75,9 @@ window.form = (function () {
     }
   };
 
-  var setPriceFieldAttributes = function (evt) {
-    adFormPriceField.setAttribute('placeholder', window.constants.TYPES_MIN_PRICES[evt.target.value]);
-    adFormPriceField.setAttribute('min', window.constants.TYPES_MIN_PRICES[evt.target.value]);
+  var setPriceFieldAttributes = function (fieldValue) {
+    adFormPriceField.setAttribute('placeholder', window.constants.TypesMinPrice[fieldValue.toUpperCase()]);
+    adFormPriceField.setAttribute('min', window.constants.TypesMinPrice[fieldValue.toUpperCase()]);
   };
 
   var equalizeTimeFields = function (evt, field) {
@@ -76,11 +85,145 @@ window.form = (function () {
   };
 
   var setFileTypeValidity = function (fileInput) {
-    if (fileInput.files[0].type.slice(window.constants.SUB_STRING_BEGIN, window.constants.SUB_STRING_LENGTH) !== 'image') {
+    if (fileInput.files[0].type.slice(window.constants.MIMESubStringParameter.BEGIN, window.constants.MIMESubStringParameter.LENGTH) !== 'image') {
       fileInput.setCustomValidity('Некорректный тип файла. Выберите файл-изображение');
     } else {
       fileInput.setCustomValidity('');
     }
+  };
+
+  var closeSuccessMessage = function (element) {
+    document.removeEventListener('click', onSuccessMessageOutClick);
+    document.removeEventListener('keydown', onSuccessMessageEscPress);
+    main.removeChild(element);
+  };
+
+  var onSuccessMessageOutClick = function (evt) {
+    if (evt.target === successMessage) {
+      closeSuccessMessage(successMessage);
+    }
+  };
+
+  var onSuccessMessageEscPress = function (evt) {
+    if (evt.key === window.constants.EvtKey.CANCEL) {
+      evt.preventDefault();
+      closeSuccessMessage(successMessage);
+    }
+  };
+
+  var onUploadDataSuccess = function () {
+    var successBlock = successPopup.cloneNode(true);
+    main.appendChild(successBlock);
+    successMessage = main.querySelector('.success');
+    window.main.setInactiveMode();
+
+    document.addEventListener('click', onSuccessMessageOutClick);
+    document.addEventListener('keydown', onSuccessMessageEscPress);
+  };
+
+  var closeErrorMessage = function (element) {
+    document.removeEventListener('click', onErrorMessageOutClick);
+    document.removeEventListener('keydown', onErrorMessageEscPress);
+    errorButton.removeEventListener('click', onErrorButtonClick);
+    errorButton.removeEventListener('keydown', onErrorButtonEnterPress);
+    main.removeChild(element);
+  };
+
+  var onErrorMessageOutClick = function (evt) {
+    var errorMessageText = main.querySelector('.error__message');
+    if (evt.target === errorMessage && evt.target !== errorMessageText) {
+      closeErrorMessage(errorMessage);
+    }
+  };
+
+  var onErrorMessageEscPress = function (evt) {
+    if (evt.key === window.constants.EvtKey.CANCEL) {
+      evt.preventDefault();
+      closeErrorMessage(errorMessage);
+    }
+  };
+
+  var onErrorButtonClick = function () {
+    closeErrorMessage(errorMessage);
+  };
+
+  var onErrorButtonEnterPress = function (evt) {
+    if (evt.key === window.constants.EvtKey.CONFIRM) {
+      evt.preventDefault();
+      closeErrorMessage(errorMessage);
+    }
+  };
+
+  var onUploadDataError = function () {
+    var errorBlock = errorPopup.cloneNode(true);
+    main.appendChild(errorBlock);
+    errorMessage = main.querySelector('.error');
+    errorButton = document.querySelector('.error__button');
+
+    document.addEventListener('click', onErrorMessageOutClick);
+    document.addEventListener('keydown', onErrorMessageEscPress);
+    errorButton.addEventListener('click', onErrorButtonClick);
+    errorButton.addEventListener('keydown', onErrorButtonEnterPress);
+  };
+
+  var onAdFormSubmit = function (evt) {
+    window.data.upload(new FormData(adForm), onUploadDataSuccess, onUploadDataError);
+    evt.preventDefault();
+  };
+
+  var onAdFormResetButtonClick = function (evt) {
+    evt.preventDefault();
+    window.main.setInactiveMode();
+  };
+
+  var onAdFormResetButtonEnterPress = function (evt) {
+    if (evt.key === window.constants.EvtKey.CONFIRM) {
+      evt.preventDefault();
+      window.main.setInactiveMode();
+    }
+  };
+
+  var activateForm = function () {
+    adForm.classList.remove('ad-form--disabled');
+    adFormFields.forEach(function (item) {
+      item.removeAttribute('disabled');
+    });
+
+    setCapacityValidity();
+    setCurrentAddress();
+
+    adFormRoomsField.addEventListener('change', onAdFormRoomsFieldChange);
+    adFormCapacityField.addEventListener('change', onAdFormCapacityFieldChange);
+    adFormTypeField.addEventListener('change', onAdFormTypeFieldChange);
+    adFormCheckInField.addEventListener('change', onAdFormCheckInFieldChange);
+    adFormCheckOutField.addEventListener('change', onAdFormCheckOutFieldChange);
+    adFormAvatarField.addEventListener('change', onAdFormAvatarFieldChange);
+    adFormPhotoField.addEventListener('change', onAdFormPhotoFieldChange);
+    adForm.addEventListener('submit', onAdFormSubmit);
+    adFormResetButton.addEventListener('click', onAdFormResetButtonClick);
+    adFormResetButton.addEventListener('keydown', onAdFormResetButtonEnterPress);
+  };
+
+  var deactivateForm = function () {
+    adForm.reset();
+    adForm.classList.add('ad-form--disabled');
+    adFormFields.forEach(function (item) {
+      item.setAttribute('disabled', 'disabled');
+    });
+
+    setCurrentAddress();
+    setPriceFieldAttributes(adFormTypeField.value);
+
+    adFormRoomsField.removeEventListener('change', onAdFormRoomsFieldChange);
+    adFormCapacityField.removeEventListener('change', onAdFormCapacityFieldChange);
+    adFormTypeField.removeEventListener('change', onAdFormTypeFieldChange);
+    adFormCheckInField.removeEventListener('change', onAdFormCheckInFieldChange);
+    adFormCheckOutField.removeEventListener('change', onAdFormCheckOutFieldChange);
+    adFormAvatarField.removeEventListener('change', onAdFormAvatarFieldChange);
+    adFormPhotoField.removeEventListener('change', onAdFormPhotoFieldChange);
+    adForm.removeEventListener('submit', onAdFormSubmit);
+    adFormResetButton.removeEventListener('click', onAdFormResetButtonClick);
+    adFormResetButton.removeEventListener('keydown', onAdFormResetButtonEnterPress);
   };
 
   return {
@@ -89,39 +232,11 @@ window.form = (function () {
     },
 
     activate: function () {
-      adForm.classList.remove('ad-form--disabled');
-      adFormFields.forEach(function (item) {
-        item.removeAttribute('disabled');
-      });
-
-      setCapacityValidity();
-      setCurrentAddress();
-
-      adFormRoomsField.addEventListener('change', onAdFormRoomsFieldChange);
-      adFormCapacityField.addEventListener('change', onAdFormCapacityFieldChange);
-      adFormTypeField.addEventListener('change', onAdFormTypeFieldChange);
-      adFormCheckInField.addEventListener('change', onAdFormCheckInFieldChange);
-      adFormCheckOutField.addEventListener('change', onAdFormCheckOutFieldChange);
-      adFormAvatarField.addEventListener('change', onAdFormAvatarFieldChange);
-      adFormPhotoField.addEventListener('change', onAdFormPhotoFieldChange);
+      activateForm();
     },
 
     deactivate: function () {
-      adForm.classList.add('ad-form--disabled');
-      adFormFields.forEach(function (item) {
-        item.setAttribute('disabled', 'disabled');
-      });
-
-      setCurrentAddress();
-
-      adFormRoomsField.removeEventListener('change', onAdFormRoomsFieldChange);
-      adFormCapacityField.removeEventListener('change', onAdFormCapacityFieldChange);
-      adFormTypeField.removeEventListener('change', onAdFormTypeFieldChange);
-      adFormCheckInField.removeEventListener('change', onAdFormCheckInFieldChange);
-      adFormCheckOutField.removeEventListener('change', onAdFormCheckOutFieldChange);
-      adFormAvatarField.removeEventListener('change', onAdFormAvatarFieldChange);
-      adFormPhotoField.removeEventListener('change', onAdFormPhotoFieldChange);
-
+      deactivateForm();
     }
   };
 })();

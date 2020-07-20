@@ -51,7 +51,7 @@ window.card = (function () {
       }
 
       if (data.offer.type && data.offer.type !== '') {
-        cardType.textContent = window.constants.TRASLATED_TYPES[data.offer.type];
+        cardType.textContent = window.constants.translatedTypes[data.offer.type];
       } else {
         cardType.classList.add('hidden');
       }
@@ -69,9 +69,9 @@ window.card = (function () {
       }
 
       if (data.offer.features && data.offer.features.length !== 0) {
-        for (var i = window.constants.FEATURES.length - 1; i >= 0; i--) {
-          if (data.offer.features.includes(window.constants.FEATURES[i])) {
-            cardFeaturesItems[i].textContent = window.constants.FEATURES[i];
+        for (var i = window.constants.features.length - 1; i >= 0; i--) {
+          if (data.offer.features.includes(window.constants.features[i])) {
+            cardFeaturesItems[i].textContent = window.constants.features[i];
           } else {
             cardFeatures.removeChild(cardFeaturesItems[i]);
           }
