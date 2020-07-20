@@ -19,9 +19,9 @@ window.map = (function () {
     var element = evt.target.tagName.toLowerCase();
     var mapPinsCollection = Array.from(mapPinsField.children);
     if (element === 'button') {
-      return mapPinsCollection.indexOf(evt.target, window.constants.PinParameters.FIRST_AVAILABLE_INDEX);
+      return mapPinsCollection.indexOf(evt.target, window.constants.PinParameter.FIRST_AVAILABLE_INDEX);
     } else if (element === 'img' || element === 'svg') {
-      return mapPinsCollection.indexOf(evt.target.closest('button'), window.constants.PinParameters.FIRST_AVAILABLE_INDEX);
+      return mapPinsCollection.indexOf(evt.target.closest('button'), window.constants.PinParameter.FIRST_AVAILABLE_INDEX);
     } else {
       return null;
     }
@@ -45,7 +45,7 @@ window.map = (function () {
   };
 
   var openPopup = function (evt, index, data) {
-    map.insertBefore(window.card.create(data[index - window.constants.PinParameters.FIRST_AVAILABLE_INDEX]), mapFilter);
+    map.insertBefore(window.card.create(data[index - window.constants.PinParameter.FIRST_AVAILABLE_INDEX]), mapFilter);
     mapPinsField.children[index].classList.add('map__pin--active');
     var cardClose = document.querySelector('.popup__close');
 
@@ -81,7 +81,7 @@ window.map = (function () {
   var removeAllOfferPins = function () {
     var mapCurrentPinSet = mapPinsField.querySelectorAll('.map__pin');
 
-    for (var i = mapCurrentPinSet.length - 1; i > window.constants.MapPinMainParameters.COLLECTION_POSITION; i--) {
+    for (var i = mapCurrentPinSet.length - 1; i > window.constants.MapPinMainParameter.COLLECTION_POSITION; i--) {
       mapPinsField.removeChild(mapCurrentPinSet[i]);
     }
   };
@@ -169,8 +169,8 @@ window.map = (function () {
         removeAllOfferPins();
       }
 
-      mapPinMain.style.top = window.constants.MapPinMainParameters.BASIS_TOP + 'px';
-      mapPinMain.style.left = window.constants.MapPinMainParameters.BASIS_LEFT + 'px';
+      mapPinMain.style.top = window.constants.MapPinMainParameter.BASIS_TOP + 'px';
+      mapPinMain.style.left = window.constants.MapPinMainParameter.BASIS_LEFT + 'px';
 
       mapPinMain.addEventListener('mousedown', onPinMainPrimaryButtonDown);
       mapPinMain.addEventListener('keydown', onPinMainEnterPress);

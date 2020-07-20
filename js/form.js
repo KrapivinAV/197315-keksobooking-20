@@ -59,7 +59,7 @@ window.form = (function () {
     var x = mapPinMain.offsetLeft + Math.floor(mapPinMainWidth / 2);
     var y = map.classList.contains('map--faded') ?
       mapPinMain.offsetTop + Math.floor(mapPinMainHeight / 2) :
-      mapPinMain.offsetTop + mapPinMainHeight + window.constants.MapPinMainParameters.ARROW_HEIGHT;
+      mapPinMain.offsetTop + mapPinMainHeight + window.constants.MapPinMainParameter.ARROW_HEIGHT;
     adFormAddressField.setAttribute('value', x + ', ' + y);
   };
 
@@ -76,8 +76,8 @@ window.form = (function () {
   };
 
   var setPriceFieldAttributes = function (fieldValue) {
-    adFormPriceField.setAttribute('placeholder', window.constants.TypesMinPrices[fieldValue.toUpperCase()]);
-    adFormPriceField.setAttribute('min', window.constants.TypesMinPrices[fieldValue.toUpperCase()]);
+    adFormPriceField.setAttribute('placeholder', window.constants.TypesMinPrice[fieldValue.toUpperCase()]);
+    adFormPriceField.setAttribute('min', window.constants.TypesMinPrice[fieldValue.toUpperCase()]);
   };
 
   var equalizeTimeFields = function (evt, field) {
@@ -85,7 +85,7 @@ window.form = (function () {
   };
 
   var setFileTypeValidity = function (fileInput) {
-    if (fileInput.files[0].type.slice(window.constants.MIMESubStringParameters.BEGIN, window.constants.MIMESubStringParameters.LENGTH) !== 'image') {
+    if (fileInput.files[0].type.slice(window.constants.MIMESubStringParameter.BEGIN, window.constants.MIMESubStringParameter.LENGTH) !== 'image') {
       fileInput.setCustomValidity('Некорректный тип файла. Выберите файл-изображение');
     } else {
       fileInput.setCustomValidity('');

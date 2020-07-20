@@ -3,7 +3,7 @@
 window.constants = (function () {
 
   return {
-    MapPinMainParameters: {
+    MapPinMainParameter: {
       COORDINATE_Y_MIN: 130,
       COORDINATE_Y_MAX: 630,
       BASIS_TOP: 375,
@@ -12,7 +12,7 @@ window.constants = (function () {
       COLLECTION_POSITION: 0
     },
 
-    PinParameters: {
+    PinParameter: {
       WIDTH: 50,
       HEIGHT: 70,
       FIRST_AVAILABLE_INDEX: 2
@@ -25,19 +25,19 @@ window.constants = (function () {
       bungalo: 'Бунгало'
     },
 
-    TypesMinPrices: {
+    TypesMinPrice: {
       PALACE: 10000,
       FLAT: 1000,
       HOUSE: 5000,
       BUNGALO: 0
     },
 
-    FilterPrices: {
+    FilterPrice: {
       MIDDLE_DOWN: 10000,
       MIDDLE_UP: 50000
     },
 
-    FilterFields: {
+    FilterField: {
       TYPE: 0,
       PRICE: 1,
       ROOMS: 2,
@@ -59,7 +59,7 @@ window.constants = (function () {
       CANCEL: 'Escape'
     },
 
-    MIMESubStringParameters: {
+    MIMESubStringParameter: {
       BEGIN: 0,
       LENGTH: 5
     },

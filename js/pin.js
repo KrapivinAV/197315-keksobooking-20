@@ -11,7 +11,7 @@ window.pin = (function () {
       var createPin = function (data) {
         var pin = pinButton.cloneNode(true);
         var pinImage = pin.querySelector('img');
-        pin.style = 'left: ' + (data.location.x - window.constants.PinParameters.WIDTH / 2) + 'px; top: ' + (data.location.y - window.constants.PinParameters.HEIGHT) + 'px;';
+        pin.style = 'left: ' + (data.location.x - window.constants.PinParameter.WIDTH / 2) + 'px; top: ' + (data.location.y - window.constants.PinParameter.HEIGHT) + 'px;';
         pinImage.src = data.author.avatar;
         pinImage.alt = data.offer.title;
         return pin;
