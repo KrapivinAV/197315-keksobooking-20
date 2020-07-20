@@ -59,7 +59,7 @@ window.form = (function () {
     var x = mapPinMain.offsetLeft + Math.floor(mapPinMainWidth / 2);
     var y = map.classList.contains('map--faded') ?
       mapPinMain.offsetTop + Math.floor(mapPinMainHeight / 2) :
-      mapPinMain.offsetTop + mapPinMainHeight + window.constants.MAP_PIN_MAIN_ARROW_HEIGHT;
+      mapPinMain.offsetTop + mapPinMainHeight + window.constants.MapPinMainParameters.ARROW_HEIGHT;
     adFormAddressField.setAttribute('value', x + ', ' + y);
   };
 
@@ -76,8 +76,8 @@ window.form = (function () {
   };
 
   var setPriceFieldAttributes = function (fieldValue) {
-    adFormPriceField.setAttribute('placeholder', window.constants.TYPES_MIN_PRICES[fieldValue]);
-    adFormPriceField.setAttribute('min', window.constants.TYPES_MIN_PRICES[fieldValue]);
+    adFormPriceField.setAttribute('placeholder', window.constants.TypesMinPrices[fieldValue.toUpperCase()]);
+    adFormPriceField.setAttribute('min', window.constants.TypesMinPrices[fieldValue.toUpperCase()]);
   };
 
   var equalizeTimeFields = function (evt, field) {
@@ -85,7 +85,7 @@ window.form = (function () {
   };
 
   var setFileTypeValidity = function (fileInput) {
-    if (fileInput.files[0].type.slice(window.constants.SUB_STRING_BEGIN, window.constants.SUB_STRING_LENGTH) !== 'image') {
+    if (fileInput.files[0].type.slice(window.constants.MIMESubStringParameters.BEGIN, window.constants.MIMESubStringParameters.LENGTH) !== 'image') {
       fileInput.setCustomValidity('Некорректный тип файла. Выберите файл-изображение');
     } else {
       fileInput.setCustomValidity('');
@@ -105,7 +105,7 @@ window.form = (function () {
   };
 
   var onSuccessMessageEscPress = function (evt) {
-    if (evt.key === window.constants.CANCEL_EVT_KEY) {
+    if (evt.key === window.constants.EvtKey.CANCEL) {
       evt.preventDefault();
       closeSuccessMessage(successMessage);
     }
@@ -137,7 +137,7 @@ window.form = (function () {
   };
 
   var onErrorMessageEscPress = function (evt) {
-    if (evt.key === window.constants.CANCEL_EVT_KEY) {
+    if (evt.key === window.constants.EvtKey.CANCEL) {
       evt.preventDefault();
       closeErrorMessage(errorMessage);
     }
@@ -148,7 +148,7 @@ window.form = (function () {
   };
 
   var onErrorButtonEnterPress = function (evt) {
-    if (evt.key === window.constants.CONFIRM_EVT_KEY) {
+    if (evt.key === window.constants.EvtKey.CONFIRM) {
       evt.preventDefault();
       closeErrorMessage(errorMessage);
     }
@@ -177,7 +177,7 @@ window.form = (function () {
   };
 
   var onAdFormResetButtonEnterPress = function (evt) {
-    if (evt.key === window.constants.CONFIRM_EVT_KEY) {
+    if (evt.key === window.constants.EvtKey.CONFIRM) {
       evt.preventDefault();
       window.main.setInactiveMode();
     }

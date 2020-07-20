@@ -17,17 +17,17 @@ window.filter = (function () {
   var comparePriceParameter = function (dataItem) {
     switch (mapFilterFields[1].value) {
       case 'low':
-        if (dataItem.offer.price < window.constants.FILTER_PRICES.middleDown) {
+        if (dataItem.offer.price < window.constants.FilterPrices.MIDDLE_DOWN) {
           compareRoomsParameter(dataItem);
         }
         break;
       case 'middle':
-        if (dataItem.offer.price >= window.constants.FILTER_PRICES.middleDown && dataItem.offer.price < window.constants.FILTER_PRICES.middleUp) {
+        if (dataItem.offer.price >= window.constants.FilterPrices.MIDDLE_DOWN && dataItem.offer.price < window.constants.FilterPrices.MIDDLE_UP) {
           compareRoomsParameter(dataItem);
         }
         break;
       case 'high':
-        if (dataItem.offer.price >= window.constants.FILTER_PRICES.middleUp) {
+        if (dataItem.offer.price >= window.constants.FilterPrices.MIDDLE_UP) {
           compareRoomsParameter(dataItem);
         }
         break;

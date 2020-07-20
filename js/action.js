@@ -3,12 +3,12 @@
 window.action = (function () {
   return {
     isEscEvent: function (evt, action) {
-      if (evt.key === window.constants.CANCEL_EVT_KEY) {
+      if (evt.key === window.constants.EvtKey.CANCEL) {
         action();
       }
     },
     isEnterEvent: function (evt, action) {
-      if (evt.key === window.constants.CONFIRM_EVT_KEY) {
+      if (evt.key === window.constants.EvtKey.CONFIRM) {
         action();
       }
     },
