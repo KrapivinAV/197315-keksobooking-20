@@ -36,7 +36,7 @@ window.form = (function () {
   };
 
   var onAdFormTypeFieldChange = function (evt) {
-    setPriceFieldAttributes(evt);
+    setPriceFieldAttributes(evt.target.value);
   };
 
   var onAdFormCheckInFieldChange = function (evt) {
@@ -75,10 +75,9 @@ window.form = (function () {
     }
   };
 
-  var setPriceFieldAttributes = function (evt) {
-    console.log(evt);
-    adFormPriceField.setAttribute('placeholder', window.constants.TYPES_MIN_PRICES[evt.target.value]);
-    adFormPriceField.setAttribute('min', window.constants.TYPES_MIN_PRICES[evt.target.value]);
+  var setPriceFieldAttributes = function (fieldValue) {
+    adFormPriceField.setAttribute('placeholder', window.constants.TYPES_MIN_PRICES[fieldValue]);
+    adFormPriceField.setAttribute('min', window.constants.TYPES_MIN_PRICES[fieldValue]);
   };
 
   var equalizeTimeFields = function (evt, field) {
@@ -213,6 +212,7 @@ window.form = (function () {
     });
 
     setCurrentAddress();
+    setPriceFieldAttributes(adFormTypeField.value);
 
     adFormRoomsField.removeEventListener('change', onAdFormRoomsFieldChange);
     adFormCapacityField.removeEventListener('change', onAdFormCapacityFieldChange);
