@@ -57,8 +57,8 @@ window.form = (function () {
     var previewContainer = adForm.querySelector('.ad-form__photo');
     var photo = document.createElement('img');
     photo.setAttribute('alt', 'Фото предлагаемого жилого помещения');
-    photo.setAttribute('width', '70');
-    photo.setAttribute('height', '70');
+    photo.setAttribute('width', window.constants.PREVIEW_CONTEINER_WIDTH);
+    photo.setAttribute('height', window.constants.PREVIEW_CONTEINER_HEIGHT);
     previewContainer.appendChild(photo);
     var preview = previewContainer.firstChild;
     setFileTypeValidity(evt.target, preview);
