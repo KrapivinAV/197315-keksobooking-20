@@ -17,6 +17,7 @@ window.form = (function () {
   var adFormCheckInField = adForm.querySelector('#timein');
   var adFormCheckOutField = adForm.querySelector('#timeout');
   var adFormAvatarField = adForm.querySelector('#avatar');
+  var adFormAvatarImage = adForm.querySelector('.ad-form-header__preview img');
   var adFormPhotoField = adForm.querySelector('#images');
   var adFormResetButton = adForm.querySelector('.ad-form__reset');
   var successTemplate = document.querySelector('#success').content;
@@ -48,7 +49,7 @@ window.form = (function () {
   };
 
   var onAdFormAvatarFieldChange = function (evt) {
-    var preview = adForm.querySelector('.ad-form-header__preview img');
+    var preview = adFormAvatarImage;
     setFileTypeValidity(evt.target, preview);
   };
 
@@ -229,6 +230,14 @@ window.form = (function () {
 
     setCurrentAddress();
     setPriceFieldAttributes(adFormTypeField.value);
+
+    if (adFormAvatarImage.src !== 'img/muffin-grey.svg') {
+      adFormAvatarImage.src = 'img/muffin-grey.svg';
+    }
+
+    if (adForm.querySelector('.ad-form__photo').firstChild) {
+      adForm.querySelector('.ad-form__photo').firstChild.remove();
+    }
 
     adFormRoomsField.removeEventListener('change', onAdFormRoomsFieldChange);
     adFormCapacityField.removeEventListener('change', onAdFormCapacityFieldChange);
