@@ -19,6 +19,7 @@ window.form = (function () {
   var adFormAvatarField = adForm.querySelector('#avatar');
   var adFormAvatarImage = adForm.querySelector('.ad-form-header__preview img');
   var adFormPhotoField = adForm.querySelector('#images');
+  var previewContainer = adForm.querySelector('.ad-form__photo');
   var adFormResetButton = adForm.querySelector('.ad-form__reset');
   var successTemplate = document.querySelector('#success').content;
   var successPopup = successTemplate.querySelector('.success');
@@ -54,7 +55,7 @@ window.form = (function () {
   };
 
   var onAdFormPhotoFieldChange = function (evt) {
-    var previewContainer = adForm.querySelector('.ad-form__photo');
+    removeFormPhoto();
     var photo = document.createElement('img');
     photo.setAttribute('alt', 'Фото предлагаемого жилого помещения');
     photo.setAttribute('width', window.constants.PREVIEW_CONTEINER_WIDTH);
@@ -62,6 +63,12 @@ window.form = (function () {
     previewContainer.appendChild(photo);
     var preview = previewContainer.firstChild;
     setFileTypeValidity(evt.target, preview);
+  };
+
+  var removeFormPhoto = function () {
+    if (previewContainer.firstChild) {
+      previewContainer.firstChild.remove();
+    }
   };
 
   var setCurrentAddress = function () {
@@ -235,9 +242,7 @@ window.form = (function () {
       adFormAvatarImage.src = 'img/muffin-grey.svg';
     }
 
-    if (adForm.querySelector('.ad-form__photo').firstChild) {
-      adForm.querySelector('.ad-form__photo').firstChild.remove();
-    }
+    removeFormPhoto();
 
     adFormRoomsField.removeEventListener('change', onAdFormRoomsFieldChange);
     adFormCapacityField.removeEventListener('change', onAdFormCapacityFieldChange);
