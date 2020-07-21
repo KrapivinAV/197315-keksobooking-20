@@ -17,7 +17,9 @@ window.form = (function () {
   var adFormCheckInField = adForm.querySelector('#timein');
   var adFormCheckOutField = adForm.querySelector('#timeout');
   var adFormAvatarField = adForm.querySelector('#avatar');
+  var adFormAvatarImage = adForm.querySelector('.ad-form-header__preview img');
   var adFormPhotoField = adForm.querySelector('#images');
+  var previewContainer = adForm.querySelector('.ad-form__photo');
   var adFormResetButton = adForm.querySelector('.ad-form__reset');
   var successTemplate = document.querySelector('#success').content;
   var successPopup = successTemplate.querySelector('.success');
@@ -48,11 +50,25 @@ window.form = (function () {
   };
 
   var onAdFormAvatarFieldChange = function (evt) {
-    setFileTypeValidity(evt.target);
+    var preview = adFormAvatarImage;
+    setFileTypeValidity(evt.target, preview);
   };
 
   var onAdFormPhotoFieldChange = function (evt) {
-    setFileTypeValidity(evt.target);
+    removeFormPhoto();
+    var photo = document.createElement('img');
+    photo.setAttribute('alt', 'Фото предлагаемого жилого помещения');
+    photo.setAttribute('width', window.constants.PREVIEW_CONTEINER_WIDTH);
+    photo.setAttribute('height', window.constants.PREVIEW_CONTEINER_HEIGHT);
+    previewContainer.appendChild(photo);
+    var preview = previewContainer.firstChild;
+    setFileTypeValidity(evt.target, preview);
+  };
+
+  var removeFormPhoto = function () {
+    if (previewContainer.firstChild) {
+      previewContainer.firstChild.remove();
+    }
   };
 
   var setCurrentAddress = function () {
@@ -84,11 +100,19 @@ window.form = (function () {
     field.value = evt.target.value;
   };
 
-  var setFileTypeValidity = function (fileInput) {
-    if (fileInput.files[0].type.slice(window.constants.MIMESubStringParameter.BEGIN, window.constants.MIMESubStringParameter.LENGTH) !== 'image') {
+  var setFileTypeValidity = function (fileInput, preview) {
+    var file = fileInput.files[0];
+    if (file.type.slice(window.constants.MIMESubStringParameter.BEGIN, window.constants.MIMESubStringParameter.LENGTH) !== 'image') {
       fileInput.setCustomValidity('Некорректный тип файла. Выберите файл-изображение');
     } else {
       fileInput.setCustomValidity('');
+      var reader = new FileReader();
+
+      reader.addEventListener('load', function () {
+        preview.src = reader.result;
+      });
+
+      reader.readAsDataURL(file);
     }
   };
 
@@ -213,6 +237,12 @@ window.form = (function () {
 
     setCurrentAddress();
     setPriceFieldAttributes(adFormTypeField.value);
+
+    if (adFormAvatarImage.src !== 'img/muffin-grey.svg') {
+      adFormAvatarImage.src = 'img/muffin-grey.svg';
+    }
+
+    removeFormPhoto();
 
     adFormRoomsField.removeEventListener('change', onAdFormRoomsFieldChange);
     adFormCapacityField.removeEventListener('change', onAdFormCapacityFieldChange);
