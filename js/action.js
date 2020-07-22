@@ -4,6 +4,7 @@ window.action = (function () {
   return {
     isEscEvent: function (evt, action) {
       if (evt.key === window.constants.EvtKey.CANCEL) {
+        evt.preventDefault();
         action();
       }
     },

@@ -28,10 +28,7 @@ window.map = (function () {
   };
 
   var onPopupEscPress = function (evt) {
-    if (evt.key === window.constants.EvtKey.CANCEL) {
-      evt.preventDefault();
-      closePopup();
-    }
+    window.action.isEscEvent(evt, closePopup);
   };
 
   var onCardCloseClick = function () {
@@ -39,9 +36,7 @@ window.map = (function () {
   };
 
   var onCardCloseEnterPress = function (evt) {
-    if (evt.key === window.constants.EvtKey.CONFIRM) {
-      closePopup();
-    }
+    window.action.isEnterEvent(evt, closePopup);
   };
 
   var openPopup = function (evt, index, data) {
@@ -73,10 +68,8 @@ window.map = (function () {
   };
 
   var onMapPinsFieldEnterPress = function (evt) {
-    if (evt.key === window.constants.EvtKey.CONFIRM) {
-      window.map.getCard(evt, currentOfferSet);
-    }
-  };
+    window.action.isEnterEvent(evt, window.map.getCard.bind(null, evt, currentOfferSet));
+  }
 
   var removeAllOfferPins = function () {
     var mapCurrentPinSet = mapPinsField.querySelectorAll('.map__pin');

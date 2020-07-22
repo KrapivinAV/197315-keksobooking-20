@@ -90,7 +90,7 @@ window.filter = (function () {
       currentOfferSet = [];
       for (var i = 0; i < data.length; i++) {
         compareTypeParameter(data[i]);
-        if (currentOfferSet.length === 5) {
+        if (currentOfferSet.length === window.constants.OFFER_CARDS_QUANTITY) {
           break;
         }
       }

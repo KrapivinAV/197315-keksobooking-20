@@ -50,8 +50,7 @@ window.form = (function () {
   };
 
   var onAdFormAvatarFieldChange = function (evt) {
-    var preview = adFormAvatarImage;
-    setFileTypeValidity(evt.target, preview);
+    setFileTypeValidity(evt.target, adFormAvatarImage);
   };
 
   var onAdFormPhotoFieldChange = function (evt) {
@@ -129,10 +128,7 @@ window.form = (function () {
   };
 
   var onSuccessMessageEscPress = function (evt) {
-    if (evt.key === window.constants.EvtKey.CANCEL) {
-      evt.preventDefault();
-      closeSuccessMessage(successMessage);
-    }
+    window.action.isEscEvent(evt, closeSuccessMessage.bind(null, successMessage));
   };
 
   var onUploadDataSuccess = function () {
@@ -161,10 +157,7 @@ window.form = (function () {
   };
 
   var onErrorMessageEscPress = function (evt) {
-    if (evt.key === window.constants.EvtKey.CANCEL) {
-      evt.preventDefault();
-      closeErrorMessage(errorMessage);
-    }
+    window.action.isEscEvent(evt, closeErrorMessage.bind(null, errorMessage));
   };
 
   var onErrorButtonClick = function () {
@@ -172,10 +165,7 @@ window.form = (function () {
   };
 
   var onErrorButtonEnterPress = function (evt) {
-    if (evt.key === window.constants.EvtKey.CONFIRM) {
-      evt.preventDefault();
-      closeErrorMessage(errorMessage);
-    }
+    window.action.isEnterEvent(evt, closeErrorMessage.bind(null, errorMessage));
   };
 
   var onUploadDataError = function () {
@@ -201,10 +191,7 @@ window.form = (function () {
   };
 
   var onAdFormResetButtonEnterPress = function (evt) {
-    if (evt.key === window.constants.EvtKey.CONFIRM) {
-      evt.preventDefault();
-      window.main.setInactiveMode();
-    }
+    window.action.isEnterEvent(evt, window.main.setInactiveMode);
   };
 
   var activateForm = function () {
