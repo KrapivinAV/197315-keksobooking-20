@@ -69,7 +69,7 @@ window.map = (function () {
 
   var onMapPinsFieldEnterPress = function (evt) {
     window.action.isEnterEvent(evt, window.map.getCard.bind(null, evt, currentOfferSet));
-  }
+  };
 
   var removeAllOfferPins = function () {
     var mapCurrentPinSet = mapPinsField.querySelectorAll('.map__pin');
